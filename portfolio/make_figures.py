@@ -89,7 +89,7 @@ def fig_cover(maps, examples):
 
 def fig_leakage(maps, conflicts, leak):
     # (a) leakage rate by split rule: the main evidence, drawn large
-    fig, ax = plt.subplots(figsize=(6.25, 3.2))
+    fig, ax = plt.subplots(figsize=(6.25, 2.9))
     names = ["무작위 분할", "lot 단위 분할", "lot+복사본 묶음 (채택)", "원본 분할"]
     keys = ["random_stratified", "group_lot", "group_lot_near_copy_component", "original_trianTestLabel"]
     y = np.arange(len(names))[::-1]
@@ -111,8 +111,8 @@ def fig_leakage(maps, conflicts, leak):
     save(fig, "p3_leakage.png")
 
     # (b) the same map carrying two labels across the original Training/Test split
-    fig = plt.figure(figsize=(6.25, 1.7))
-    gs = fig.add_gridspec(1, 4, left=0.01, right=0.99, top=0.68, bottom=0.03, wspace=0.55)
+    fig = plt.figure(figsize=(6.25, 1.5))
+    gs = fig.add_gridspec(1, 4, left=0.01, right=0.99, top=0.64, bottom=0.03, wspace=0.55)
     for k, group in enumerate(conflicts[:4]):
         sub = gs[k].subgridspec(1, 2, wspace=0.3)
         for j, (idx, label, split, _) in enumerate(group[:2]):
@@ -173,9 +173,9 @@ def fig_timeline():
         h, m = hm.split(":")
         return int(h) + int(m) / 60
 
-    fig, ax = plt.subplots(figsize=(11.9, 2.9))
-    lanes = {"검증·조사 에이전트\n(별도 세션, 병렬)\n숫자 = 에이전트 수": 0, "Claude Code\n구현·학습\n(진한 색 = GPU)": 1.2,
-             "본인\n체크포인트 판단": 2.3}
+    fig, ax = plt.subplots(figsize=(11.9, 2.2))
+    lanes = {"검증·조사 에이전트\n(별도 세션, 병렬)\n숫자 = 에이전트 수": 0, "Claude Code\n구현·학습\n(진한 색 = GPU)": 1.0,
+             "본인\n체크포인트 판단": 1.9}
     # (start, end, label, color)
     impl = [("15:15", "15:24", "", BLUE2), ("15:27", "16:09", "탐색 스크립트", BLUE2),
             ("16:35", "17:15", "분할·베이스라인", BLUE2), ("17:17", "18:31", "CNN 학습 ×2", BLUE),
@@ -189,9 +189,9 @@ def fig_timeline():
     cps = [("15:24", "CP1", 0), ("16:09", "CP2", 0), ("17:04", "CP3", 0), ("18:51", "판단 9 분할 수정", 0),
            ("21:07", "CP4", 0), ("21:15", "CP5", 1), ("22:28", "CP6", 0)]
     for s, e, label, color in impl:
-        ax.broken_barh([(t(s), t(e) - t(s))], (1.2 - 0.26, 0.52), facecolors=color, edgecolors="none")
+        ax.broken_barh([(t(s), t(e) - t(s))], (1.0 - 0.24, 0.48), facecolors=color, edgecolors="none")
         if label:
-            ax.text((t(s) + t(e)) / 2, 1.2, label, ha="center", va="center", fontsize=9.5,
+            ax.text((t(s) + t(e)) / 2, 1.0, label, ha="center", va="center", fontsize=9,
                     color="white" if color == BLUE else INK)
     for s, e, n, row in agents:
         yc = 0.16 - 0.32 * row
@@ -199,13 +199,13 @@ def fig_timeline():
         ax.text((t(s) + t(e)) / 2, yc, n, ha="center", va="center", fontsize=9, color="white", weight="bold")
     for s, label, up in cps:
         col = ORANGE if "판단" in label else INK
-        ax.plot(t(s), 2.3, "o", color=col, markersize=8, zorder=3)
-        ax.text(t(s), 2.62 + 0.3 * up, label, ha="center", va="bottom", fontsize=9.5, color=col)
+        ax.plot(t(s), 1.9, "o", color=col, markersize=7, zorder=3)
+        ax.text(t(s), 2.15 + 0.28 * up, label, ha="center", va="bottom", fontsize=9, color=col)
     ax.axvline(t("14:48"), color=GRID, linewidth=1)
     ax.axvline(t("22:28"), color=GRID, linewidth=1)
     ax.set_xlim(t("14:40"), t("22:40"))
-    ax.set_ylim(-0.5, 3.3)
-    ax.set_yticks(list(lanes.values()), list(lanes.keys()), fontsize=10)
+    ax.set_ylim(-0.45, 2.8)
+    ax.set_yticks(list(lanes.values()), list(lanes.keys()), fontsize=9.5)
     ax.set_xticks(range(15, 23))
     ax.set_xticklabels([f"{h}:00" for h in range(15, 23)], fontsize=10)
     for side in ("top", "right", "left"):
@@ -214,7 +214,7 @@ def fig_timeline():
     ax.tick_params(length=0)
     ax.grid(axis="x", color=GRID, linewidth=0.8)
     ax.set_axisbelow(True)
-    fig.subplots_adjust(left=0.12, right=0.99, top=0.98, bottom=0.15)
+    fig.subplots_adjust(left=0.12, right=0.99, top=0.98, bottom=0.17)
     save(fig, "p6_timeline.png")
 
 
