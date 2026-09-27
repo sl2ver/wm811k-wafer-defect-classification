@@ -162,13 +162,13 @@ function frame(slide, n, title, key, source) {
     ["오분류 검토", "96장을 라벨 가린 채 독립 판정 2회", "애매 46% / 모델 오류 27% / 라벨 의심 27%"],
     ["재현", "새 폴더에 clone 후 README 순서로 재실행", "1시간 8분, 비교 항목 10개 일치"],
   ], { x: ML, y: 2.35, w: 6.5, colW: [1.35, 2.85, 2.3], rowH: 0.5, header: true });
-  s.addImage({ path: "fig/p5_e11.png", x: 7.45, y: 2.3, w: 5.04, h: 2.75 });
-  text(s, "분할 절차 오류 (LOG E11)", { x: 7.45, y: 5.12, w: 5.2, h: 0.3, fontSize: 13, bold: true });
+  s.addImage({ path: "fig/p5_e11.png", x: 7.45, y: 2.3, w: 4.77, h: 2.6 });
+  text(s, "분할 절차 오류 (LOG E11)", { x: 7.45, y: 4.98, w: 5.2, h: 0.3, fontSize: 13, bold: true });
   labeled(s, [
     ["원인", "scikit-learn 1.9.1 StratifiedGroupKFold가 크고 치우친 그룹을 seed와 무관하게 같은 fold에 배정. 맞히기 쉬운 Loc 웨이퍼 132장(28개 lot)이 항상 test에 들어감"],
     ["발견", "분할 규칙을 바꾼 뒤 베이스라인 점수가 이유 없이 오름 → seed 10개로 다시 나눔(Loc recall 최대 15%p 차이) → lot 묶음 하나만 test에서 빼 보는 실험"],
     ["수정", "fold와 분할의 대응을 seed로 무작위 치환하고 모든 모델 재학습(0.893 → 0.909). 분할 직후 train–test 겹침과 lot 묶음 비중을 검사하는 단계 추가"],
-  ], { x: 7.45, y: 5.42, w: 5.2, h: 1.45, fontSize: 11.5, lineSpacing: 16, paraSpaceAfter: 3 });
+  ], { x: 7.45, y: 5.28, w: 5.2, h: 1.6, fontSize: 11.5, lineSpacing: 16, paraSpaceAfter: 3 });
 }
 
 // ---------------------------------------------------------------- 6. how the AI was used
@@ -176,7 +176,7 @@ function frame(slide, n, title, key, source) {
   const s = pres.addSlide();
   frame(s, 5, "AI 협업 방식",
     "문제 정의와 기준, 최종 판단은 제가 내리고 구현과 실험은 Claude Code에 맡겼습니다. 결과는 제가 정한 절차로 검증했습니다.",
-    "근거: LOG.md 판단 지점 1~13, 오류 기록 E1~E14, docs/wafer_project_prompt.md");
+    "근거: LOG.md 판단 지점 1~13, 오류 기록 E1~E15, docs/wafer_project_prompt.md");
   table(s, [
     ["본인", "문제 정의, 정제·분할 규칙, 성공 기준, 모델 채택·폐기, 최종 수치 채택, 오류 판정 (판단 13건)"],
     ["Claude Code", "코드 구현, 실험 실행, 문헌·도구 조사, 독립 에이전트의 반박 검증 (오류 15건 중 7건 발견)"],
