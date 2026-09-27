@@ -84,18 +84,9 @@ def fig_cover(maps, examples):
 
 
 def fig_leakage(maps, conflicts, leak):
-    fig = plt.figure(figsize=(5.6, 4.4))
-    top = fig.add_gridspec(1, 4, left=0.02, right=0.98, top=0.86, bottom=0.64, wspace=0.5)
-    for k, group in enumerate(conflicts[:4]):
-        sub = top[k].subgridspec(1, 2, wspace=0.4)
-        for j, (idx, label, split, _) in enumerate(group[:2]):
-            ax = fig.add_subplot(sub[j])
-            draw_map(ax, maps[idx], f"{label}\n({split})", size=8)
-    fig.text(0.02, 0.985, "같은 맵, 다른 라벨: 원본 Training/Test 사이 복사본 14쌍 중 4쌍", fontsize=11.5,
-             color=INK, va="top", weight="bold")
-
-    ax = fig.add_subplot(fig.add_gridspec(1, 1, left=0.3, right=0.97, top=0.41, bottom=0.1)[0])
-    names = ["무작위 분할", "lot 단위 분할", "lot+복사본 (채택)", "원본 분할"]
+    # (a) leakage rate by split rule: the main evidence, drawn large
+    fig, ax = plt.subplots(figsize=(5.6, 2.9))
+    names = ["무작위 분할", "lot 단위 분할", "lot+복사본 묶음 (채택)", "원본 분할"]
     keys = ["random_stratified", "group_lot", "group_lot_near_copy_component", "original_trianTestLabel"]
     y = np.arange(len(names))[::-1]
     for off, (metric, color, label) in zip((0.19, -0.19), (
@@ -104,15 +95,28 @@ def fig_leakage(maps, conflicts, leak):
         vals = [100 * leak[k][metric] for k in keys]
         ax.barh(y + off, vals, height=0.34, color=color, label=label)
         for yi, v in zip(y + off, vals):
-            ax.text(v + 0.6, yi, f"{v:.1f}%" if v else "0%", va="center", ha="left", color=INK2, fontsize=10.5)
-    ax.set_yticks(y, names, fontsize=11)
+            ax.text(v + 0.6, yi, f"{v:.1f}%" if v else "0%", va="center", ha="left", color=INK2, fontsize=11)
+    ax.set_yticks(y, names, fontsize=12)
     ax.set_xlim(0, 52)
     ax.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.0f}%"))
-    fig.text(0.02, 0.52, "test 웨이퍼 중 학습 쪽에 10픽셀 이내 복사본이 있는 비율", fontsize=11.5,
-             color=INK, va="top", weight="bold")
-    ax.legend(frameon=False, loc="lower right", fontsize=10.5)
+    fig.text(0.01, 0.975, "test 웨이퍼 중 학습 쪽에 10픽셀 이내 복사본이 있는 비율", fontsize=12.5, color=INK,
+             va="top", weight="bold")
+    ax.legend(frameon=False, loc="lower right", fontsize=11)
     quiet(ax)
+    fig.subplots_adjust(left=0.33, right=0.98, top=0.84, bottom=0.14)
     save(fig, "p3_leakage.png")
+
+    # (b) the same map carrying two labels across the original Training/Test split
+    fig = plt.figure(figsize=(5.6, 1.55))
+    gs = fig.add_gridspec(1, 4, left=0.01, right=0.99, top=0.66, bottom=0.03, wspace=0.55)
+    for k, group in enumerate(conflicts[:4]):
+        sub = gs[k].subgridspec(1, 2, wspace=0.3)
+        for j, (idx, label, split, _) in enumerate(group[:2]):
+            ax = fig.add_subplot(sub[j])
+            draw_map(ax, maps[idx], f"{label}\n({split})", size=8)
+    fig.text(0.01, 0.985, "같은 맵, 다른 라벨: 원본 Training/Test 사이 복사본 14쌍 중 4쌍", fontsize=12.5,
+             color=INK, va="top", weight="bold")
+    save(fig, "p3_pairs.png")
 
 
 def fig_recall(bt, ft):

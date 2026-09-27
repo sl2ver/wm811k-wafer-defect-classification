@@ -169,27 +169,24 @@ function frame(slide, n, title, key, source) {
   const s = pres.addSlide();
   text(s, "웨이퍼 맵 불량 패턴 분류", { x: ML, y: 1.9, w: CW, h: 0.9, fontSize: 40, bold: true });
   text(s, "lot 단위로 나눈 평가에서 macro-F1 0.909를 확인한 소형 CNN", { x: ML, y: 2.85, w: CW, h: 0.5, fontFace: FS, fontSize: 20, color: NAVY });
-  text(s, "AI 코딩 에이전트 Claude Code와 역할을 나눠 진행: 판단·검증은 본인, 구현·실험은 AI", { x: ML, y: 3.45, w: CW, h: 0.4, fontSize: 14, color: INK2 });
-  text(s, "WM-811K 공개 데이터  |  개인 프로젝트  |  2026. 9.", { x: ML, y: 3.8, w: CW, h: 0.4, fontSize: 14, color: INK2 });
-  s.addImage({ path: "fig/p1_wafer_strip.png", x: ML, y: 4.4, w: 11.9, h: 1.6 });
-  text(s, "이진성", { x: ML, y: 6.4, w: 4, h: 0.4, fontSize: 16, bold: true });
-  text(s, "서울과학기술대학교 전기정보공학과 석사과정", { x: ML, y: 6.8, w: 8, h: 0.35, fontSize: 13, color: INK2 });
+  text(s, "WM-811K 공개 데이터  |  개인 프로젝트  |  2026. 9.", { x: ML, y: 3.5, w: CW, h: 0.4, fontSize: 14, color: INK2 });
+  s.addImage({ path: "fig/p1_wafer_strip.png", x: ML, y: 4.3, w: 11.9, h: 1.6 });
+  text(s, "이진성", { x: ML, y: 6.45, w: 4, h: 0.4, fontSize: 16, bold: true });
 }
 
 // ---------------------------------------------------------------- 2. overview (doubles as table of contents)
 {
   const s = pres.addSlide();
   frame(s, 1, "프로젝트 개요",
-    "학습에 쓰지 않은 lot에서 macro-F1 0.909를 확인했습니다. 평가 방식을 먼저 고치고, 결과를 다섯 가지 방법으로 검증했습니다.");
+    "Claude Code에 구현과 실험을 맡기고 평가 방식과 판단·검증은 제가 맡아, 학습에 쓰지 않은 lot에서 macro-F1 0.909를 확인했습니다.");
   table(s, [
     ["기간·형태", "2026년 9월, 개인 프로젝트(1인)"],
+    ["AI 활용", `구현·실험·문헌 조사: Claude Code / 문제 정의·평가 설계·판단·검증: 본인. 별도 검증 에이전트 45개(워크플로${NB}10회), 체크포인트 6개에서 판단${NB}13건, 오류${NB}15건 기록`],
     ["데이터", `WM-811K 웨이퍼 맵 811,457장 중 라벨 있는 172,950장, 불량 패턴${NB}9종`],
     ["문제", "같은 웨이퍼의 복사본이 학습과 평가에 섞이는 누수를 막고, 새 lot에서의 성능을 재기"],
     ["결과", `macro-F1 0.843(베이스라인) → 0.909(CNN), 모든 패턴 recall${NB}0.77 이상`],
-    ["역할", "문제 정의·평가 설계·판단·검증: 본인 / 코드 구현·실험·문헌 조사: Claude Code(AI 코딩 에이전트)"],
-    ["AI 활용", `Claude Code(구현·실험) + 별도 검증 에이전트 45개(워크플로${NB}10회). 체크포인트 6개에서 판단${NB}13건, 오류${NB}15건 기록`],
     ["환경", "Python 3.12, PyTorch 2.7(CUDA 11.8), scikit-learn 1.9.1, Streamlit, Quadro P2000"],
-  ], { x: ML, y: 2.4, w: 7.0, colW: [1.25, 5.75], rowH: 0.44, fontSize: 12.5 });
+  ], { x: ML, y: 2.4, w: 7.0, colW: [1.25, 5.75], rowH: 0.46, fontSize: 12.5 });
 
   text(s, "진행 순서", { x: 8.1, y: 2.4, w: 4.5, h: 0.3, fontSize: 12, color: GRAY });
   const steps = [["데이터 탐색과 누수 확인", "3쪽"], ["평가 설계: lot 단위 분할, 성공 기준", "3쪽"],
@@ -214,7 +211,7 @@ function frame(slide, n, title, key, source) {
 {
   const s = pres.addSlide();
   frame(s, 2, "문제 정의: 데이터와 평가 방식",
-    "원본 분할과 무작위 분할은 같은 웨이퍼의 복사본이 학습과 평가 양쪽에 들어가 점수가 부풀려집니다. 그래서 lot과 복사본을 한 묶음으로 나눴습니다.",
+    "AI 에이전트 10개의 탐색으로 이상점 17개를 받았고, 그중 '같은 웨이퍼의 복사본이 학습과 평가에 섞인다'를 핵심 문제로 정해 lot과 복사본을 한 묶음으로 나누는 규칙을 세웠습니다.",
     "근거: scripts/explore_data.py, scripts/make_splits.py → outputs/eda/summary.json, outputs/splits/split_summary.json");
   text(s, "누수 3겹", { x: ML, y: 2.3, w: 3, h: 0.3, fontSize: 14, bold: true });
   table(s, [
@@ -229,14 +226,15 @@ function frame(slide, n, title, key, source) {
   ], { x: ML, y: 4.2, w: 6.1, labelW: 1.25, fontSize: 13, rowH: 0.34 });
   roles(s, "탐색·정제·분할 스크립트 3개 구현, 이상점 탐색 에이전트 10개 병렬 실행",
     `정제 규칙, 분할 방식, 성공 기준 결정(판단 지점${NB}6·7). 라벨 없는 638,507장 제외 결정`, { x: ML, y: 6.05, w: 6.1, h: 0.82 });
-  s.addImage({ path: "fig/p3_leakage.png", x: 7.05, y: 2.35, w: 5.6, h: 4.4 });
+  s.addImage({ path: "fig/p3_leakage.png", x: 7.05, y: 2.35, w: 5.6, h: 2.9 });
+  s.addImage({ path: "fig/p3_pairs.png", x: 7.05, y: 5.35, w: 5.6, h: 1.55 });
 }
 
 // ---------------------------------------------------------------- 4. method and results
 {
   const s = pres.addSlide();
   frame(s, 3, "방법과 결과",
-    "같은 데이터·같은 분할·같은 test 25,444장에서 소형 CNN이 베이스라인보다 macro-F1 0.066 높았고, Loc·Scratch recall이 가장 크게 올랐습니다.",
+    "베이스라인과 CNN 구현은 AI에 맡기고, 개선 방향(맵을 직접 보는 소형 CNN + val 보정)과 채택 기준은 제가 정했습니다. 같은 test 25,444장에서 macro-F1 0.843 → 0.909.",
     "근거: scripts/baseline.py, train_cnn.py, evaluate_cnn.py → outputs/baseline/results.json, outputs/cnn/results.json. 신뢰구간은 연결 성분 부트스트랩 1,000회");
   table(s, [
     ["모델", "macro-F1 (95% CI)", "최저 recall"],
@@ -259,7 +257,7 @@ function frame(slide, n, title, key, source) {
 {
   const s = pres.addSlide();
   frame(s, 4, "검증과 오류 수정",
-    "점수가 예상보다 높게 나온 이유를 확인하려고 다섯 가지를 검증했고, 그 과정에서 분할 절차의 오류 하나를 찾아 고쳤습니다.",
+    "점수가 예상보다 높게 나오자 검증 에이전트 4개를 병렬로 돌리고 개입 실험을 시켰습니다. 그 과정에서 분할 절차의 오류 하나를 잡아 고쳤습니다.",
     "근거: outputs/splits/split_seed_variance.json, outputs/cnn/outline_intervention.json, scripts/compare_reproduction.py, LOG.md 오류 기록 E11");
   table(s, [
     ["검증", "방법", "결과"],
@@ -269,8 +267,8 @@ function frame(slide, n, title, key, source) {
     ["오분류 검토", "96장을 라벨 가린 채 독립 판정 2회", `애매${NB}46% / 모델 오류${NB}27% / 라벨 의심${NB}27%`],
     ["재현", "새 폴더에 clone 후 README 순서로 재실행", `1시간${NB}8분, 비교 항목 10개 일치`],
   ], { x: ML, y: 2.35, w: 6.5, colW: [1.35, 2.85, 2.3], rowH: 0.46, header: true });
-  roles(s, "검증 에이전트 4개 병렬(지표 재계산, 짝비교, 지름길, 이중맹검), 개입 실험·재현 비교 스크립트 구현",
-    `오류 판정과 절차 수정 후 전부 재학습 결정(판단 지점${NB}9), 재현 범위 결정(판단 지점${NB}11·12)`, { x: ML, y: 5.5, w: 6.5, h: 0.82 });
+  roles(s, "검증 에이전트 4개 병렬 실행, 개입 실험·재현 비교 스크립트 구현",
+    `오류 판정, 절차 수정 후 전부 재학습 결정(판단 지점${NB}9), 재현 범위 결정(판단 지점${NB}11·12)`, { x: ML, y: 5.5, w: 6.5, h: 0.72 });
   s.addImage({ path: "fig/p5_e11.png", x: 7.45, y: 2.3, w: 4.77, h: 2.6 });
   text(s, "분할 절차 오류 (LOG E11)", { x: 7.45, y: 4.98, w: 5.2, h: 0.3, fontSize: 13, bold: true });
   labeled(s, [
@@ -287,20 +285,19 @@ function frame(slide, n, title, key, source) {
     "첫 지시문에 AI가 할 일과 멈출 지점, 수치와 오류의 기록 규칙을 정해 두고, 체크포인트 6개에서 판단 13건을 내렸습니다.",
     "근거: docs/wafer_project_prompt.md(첫 지시문 원문), LOG.md 지시 원문·판단 지점 1~13");
   text(s, "첫 지시문에서 정한 규칙 (원문)", { x: ML, y: 2.3, w: 6.0, h: 0.3, fontSize: 13, bold: true });
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y: 2.65, w: 6.0, h: 3.2, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.05 });
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y: 2.65, w: 6.0, h: 2.65, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.05 });
   paras(s, [
-    "“네가 한다: 데이터 탐색, 코드 구현, 실험 실행, 결과 정리, 선택지와 근거 제시”",
     "“판단이 필요한 지점에서는 멈추고 나에게 묻는다. 선택지 2~3개와 각각의 장단점을 제시하고, 추천이 있으면 이유와 함께 밝힌다. 조용히 하나를 골라 진행하지 않는다.”",
     "“내 지시가 틀렸다고 생각하면 반대 의견임을 명시하고 근거를 댄다. 그대로 따르지 않는다.”",
     "“숫자는 실행 결과에서만 가져온다. 추정치를 결과처럼 쓰지 않는다. 결과를 적을 때는 어떤 스크립트·어떤 설정에서 나온 값인지 함께 적는다.”",
     "“오류 기록: 네 코드나 판단이 틀렸던 경우, 누가(나/너) 어떻게 발견했고 무엇을 바꿨는지. 틀린 것을 숨기지 말고 반드시 남긴다.”",
     "“각 체크포인트(★)에서는 반드시 멈추고 나에게 보고한 뒤 지시를 기다린다.”",
-  ], { x: ML + 0.15, y: 2.78, w: 5.7, h: 3.0, fontSize: 12, color: INK, lineSpacing: 17, paraSpaceAfter: 7 });
-  text(s, "진행 중 지시 (채팅 원문)", { x: ML, y: 6.0, w: 6.0, h: 0.3, fontSize: 13, bold: true });
-  labeled(s, [
-    ["“내가 100프로 만족할 수 있게 나에게 질문하면서 진행해”", "첫 지시. 체크포인트마다 멈추게 한 근거"],
-    ["“대시보드의 문체를 다른 사이트를 참고해서 바꿔줘 너무 ai틱해”", "산출물 반려. 참고 사례를 조사한 뒤 문구를 다시 씀"],
-  ], { x: ML, y: 6.3, w: 6.0, labelW: 3.85, fontSize: 11, color: INK2, rowH: 0.26 });
+  ], { x: ML + 0.15, y: 2.78, w: 5.7, h: 2.45, fontSize: 12, color: INK, lineSpacing: 17, paraSpaceAfter: 7 });
+  table(s, [
+    ["판단", "선택", "근거"],
+    ["라벨 없는 638,507장", "제외", `불량 0개 맵이 5.8만${NB}장 등 분포가 다르고, 평가 맵의 복사본 5,408장이 섞여 있음`],
+    ["분할 오류 대응", "절차 수정 후 전부 재학습", "닮은 맵 묶음 규칙은 유지하고 fold 배정만 무작위로. 이전 결과는 '편향된 분할'로 표시해 남김"],
+  ], { x: ML, y: 5.45, w: 6.0, colW: [1.35, 1.55, 3.1], rowH: 0.3, header: true, fontSize: 10.5 });
 
   // work loop
   const fx = 7.0, fw = 5.63;
@@ -315,14 +312,14 @@ function frame(slide, n, title, key, source) {
       { x: fx + 0.15, y, w: fw - 0.3, h: 0.4, fontSize: 12.5, valign: "middle" });
     if (i < flow.length - 1) text(s, "↓", { x: fx + fw / 2 - 0.15, y: y + 0.37, w: 0.3, h: 0.16, fontSize: 10, color: GRAY, align: "center" });
   });
-  text(s, "체크포인트 6개 · 판단 13건 · 검증 워크플로 10회(에이전트 45개) · 오류 15건 기록", { x: fx, y: 4.7, w: fw, h: 0.3, fontSize: 11.5, color: INK2 });
+  text(s, `체크포인트 6개 · 판단 13건 · 검증 워크플로 10회(에이전트 45개) · 오류 15건 · 작업 시간 7시간${NB}40분`, { x: fx, y: 4.72, w: fw, h: 0.28, fontSize: 10, color: INK2 });
 
+  // one real checkpoint: what the AI proposed, what I decided (LOG 17:04 report, 판단 지점 8)
   table(s, [
-    ["판단", "선택", "근거"],
-    ["라벨 없는 638,507장", "제외", `불량 0개 맵이 5.8만${NB}장 등 분포가 다르고, 평가 맵의 복사본 5,408장이 섞여 있음`],
-    ["성공 기준", `macro-F1${NB}0.80 + 전 패턴 recall${NB}0.50`, "선행연구의 lot 분할 0.85는 재검사 복사본 누수 가능성이 크고, 라벨 노이즈도 있음"],
-    ["분할 오류 대응", "절차 수정 후 전부 재학습", "닮은 맵 묶음 규칙은 유지하고 fold 배정만 무작위로. 이전 결과는 '편향된 분할'로 표시해 남김"],
-  ], { x: fx, y: 5.02, w: fw, colW: [1.3, 1.55, 2.78], rowH: 0.3, header: true, fontSize: 10 });
+    ["체크포인트 3에서 AI가 보고한 개선 방향 후보", "내 결정 (판단 지점 8)"],
+    ["① 소형 CNN: 맵을 격자로 맞추고 회전·반전 증강. 약한 패턴은 모양·위치가 핵심인데 손으로 만든 특징은 이를 뭉갬(덩어리 특징만 빼도 0.81 → 0.68). ② 특징 강화 + 부스팅: 직선·국부 덩어리 특징 추가. 가볍지만 개선 폭 제한. ③ 사후 임계값 보정: val에서 패턴별 가중 조정. 빠르지만 드문 패턴은 val 과적합 위험",
+      "①+③ 조합. 가중 없는 CE와 weighted CE를 같은 test에서 비교하고, 보정값은 val에서만 정함. 비교 기준은 test 최고 베이스라인(더 엄격한 쪽). 입력은 비등방 64×64 불량 보존 축소. 결과: weighted CE는 0.825로 폐기, 보정 채택으로 0.909"],
+  ], { x: fx, y: 5.02, w: fw, colW: [2.85, 2.78], rowH: 0.3, header: true, fontSize: 10.5 });
 }
 
 // ---------------------------------------------------------------- 7. how the AI was used (2): verification and catching AI errors
