@@ -95,6 +95,9 @@ def main_split(kept: pd.DataFrame, seed: int = SEED) -> pd.Series:
     fold = np.empty(len(kept), dtype=int)
     for k, (_, te) in enumerate(sgkf.split(kept, kept["label"], groups=kept["component"])):
         fold[te] = k
+    # SGKF places the largest, most class-skewed groups greedily into the same fold numbers
+    # whatever the seed (shuffle only reorders ties), so draw which folds become test/val at random.
+    fold = np.random.default_rng(seed).permutation(N_FOLDS)[fold]
     return pd.Series(np.select([fold < 3, fold < 6], ["test", "val"], "train"), index=kept.index)
 
 

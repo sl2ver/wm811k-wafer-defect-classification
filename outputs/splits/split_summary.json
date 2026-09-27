@@ -44,48 +44,48 @@
   },
   "main": {
     "rows": {
-      "train": 118774,
-      "val": 25453,
-      "test": 25453
+      "train": 118785,
+      "val": 25451,
+      "test": 25444
     },
     "share": {
-      "train": 0.7,
+      "train": 0.7001,
       "val": 0.15,
       "test": 0.15
     },
     "class_counts": {
       "train": {
-        "Center": 3000,
-        "Donut": 389,
-        "Edge-Loc": 3606,
-        "Edge-Ring": 6771,
-        "Loc": 2502,
-        "Near-full": 90,
+        "Center": 2999,
+        "Donut": 388,
+        "Edge-Loc": 3604,
+        "Edge-Ring": 6769,
+        "Loc": 2499,
+        "Near-full": 96,
         "Random": 599,
         "Scratch": 827,
-        "none": 100990
+        "none": 101004
       },
       "val": {
         "Center": 643,
         "Donut": 83,
-        "Edge-Loc": 772,
-        "Edge-Ring": 1450,
-        "Loc": 535,
-        "Near-full": 20,
-        "Random": 126,
-        "Scratch": 178,
-        "none": 21646
-      },
-      "test": {
-        "Center": 643,
-        "Donut": 83,
         "Edge-Loc": 773,
         "Edge-Ring": 1451,
-        "Loc": 535,
-        "Near-full": 31,
-        "Random": 127,
+        "Loc": 536,
+        "Near-full": 27,
+        "Random": 126,
         "Scratch": 177,
-        "none": 21633
+        "none": 21635
+      },
+      "test": {
+        "Center": 644,
+        "Donut": 84,
+        "Edge-Loc": 774,
+        "Edge-Ring": 1452,
+        "Loc": 537,
+        "Near-full": 18,
+        "Random": 127,
+        "Scratch": 178,
+        "none": 21630
       }
     },
     "leakage": {
