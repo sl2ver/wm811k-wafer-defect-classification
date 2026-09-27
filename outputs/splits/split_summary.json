@@ -2,6 +2,7 @@
   "source": "scripts/make_splits.py",
   "seed": 0,
   "near_px": 10,
+  "rel_px": 0.1,
   "min_dies": 100,
   "cleaning": {
     "labeled": 172950,
@@ -21,19 +22,31 @@
     "Donut": 555,
     "Near-full": 141
   },
-  "near_copy_pairs_after_cleaning": 4299,
-  "exact_pairs_after_cleaning": 0,
+  "twin_pairs_after_cleaning": {
+    "total": 8075,
+    "cross_lot": 6844,
+    "exact": 16,
+    "plain_le_near_px": 4299,
+    "plain_relative_only": 3724,
+    "by_transform_not_identity": {
+      "flip_ud": 18,
+      "rot270": 17,
+      "rot180": 14,
+      "flip_lr": 2,
+      "transpose": 1
+    }
+  },
   "components": {
-    "count": 10114,
-    "largest": 133,
-    "largest_share": 0.0008,
-    "multi_lot": 387
+    "count": 10019,
+    "largest": 256,
+    "largest_share": 0.0015,
+    "multi_lot": 439
   },
   "main": {
     "rows": {
-      "train": 118777,
-      "val": 25452,
-      "test": 25451
+      "train": 118774,
+      "val": 25453,
+      "test": 25453
     },
     "share": {
       "train": 0.7,
@@ -42,42 +55,43 @@
     },
     "class_counts": {
       "train": {
-        "Center": 2999,
-        "Donut": 388,
-        "Edge-Loc": 3607,
-        "Edge-Ring": 6770,
-        "Loc": 2500,
-        "Near-full": 97,
-        "Random": 596,
-        "Scratch": 826,
-        "none": 100994
+        "Center": 3000,
+        "Donut": 389,
+        "Edge-Loc": 3606,
+        "Edge-Ring": 6771,
+        "Loc": 2502,
+        "Near-full": 90,
+        "Random": 599,
+        "Scratch": 827,
+        "none": 100990
       },
       "val": {
         "Center": 643,
         "Donut": 83,
         "Edge-Loc": 772,
         "Edge-Ring": 1450,
-        "Loc": 536,
-        "Near-full": 23,
-        "Random": 129,
+        "Loc": 535,
+        "Near-full": 20,
+        "Random": 126,
         "Scratch": 178,
-        "none": 21638
+        "none": 21646
       },
       "test": {
-        "Center": 644,
-        "Donut": 84,
-        "Edge-Loc": 772,
-        "Edge-Ring": 1452,
-        "Loc": 536,
-        "Near-full": 21,
+        "Center": 643,
+        "Donut": 83,
+        "Edge-Loc": 773,
+        "Edge-Ring": 1451,
+        "Loc": 535,
+        "Near-full": 31,
         "Random": 127,
-        "Scratch": 178,
-        "none": 21637
+        "Scratch": 177,
+        "none": 21633
       }
     },
     "leakage": {
-      "near_copy_pairs_across_splits": 0,
-      "near_copy_pairs_train_test": 0,
+      "twin_pairs_across_splits": 0,
+      "twin_pairs_train_test": 0,
+      "plain_le_near_px_pairs_across_splits": 0,
       "exact_pairs_across_splits": 0,
       "lots_in_more_than_one_split": 0
     }
@@ -129,9 +143,10 @@
       }
     },
     "leakage": {
-      "near_copy_pairs_across_splits": 2049,
-      "near_copy_pairs_train_test": 841,
-      "exact_pairs_across_splits": 0,
+      "twin_pairs_across_splits": 3759,
+      "twin_pairs_train_test": 1324,
+      "plain_le_near_px_pairs_across_splits": 2049,
+      "exact_pairs_across_splits": 10,
       "lots_in_more_than_one_split": 7849
     }
   }
