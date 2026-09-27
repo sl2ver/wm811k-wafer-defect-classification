@@ -142,6 +142,32 @@ C: 여유가 작아서 데이터와 venv를 어디에 둘지가 첫 판단 지�
 - 첫 실행 뒤 스크립트에 기대 SHA-256을 넣었다. 2차 실행은 다운로드를 건너뛰고 크기, 해시, shape가 모두 OK였다.
 - PowerShell이 tqdm의 stderr 출력을 `NativeCommandError`로 감쌌지만 종료 코드는 0이었다. PowerShell 5.1의 표시 방식일 뿐 오류는 아니다.
 
+**커밋**: `6639f5b`(1단계 파일 전체), `11c1548`(PLAN 작성 시각 기입). 원격 저장소는 아직 없다(`git ls-remote` → Repository not found).
+
+## [15:24 | T+0:36] ★ 체크포인트 1 보고
+
+채팅으로 보고했다. 내용은 데이터 확보 방법과 용량, 검증 수치, GPU 결과, 확인 방법 명령 2개, 요청 사항 2건(GitHub 저장소 생성, 2단계 진행 지시)이다.
+
+## [15:25 | T+0:37] 저장소 생성 관련 질문과 판단 지점 5
+
+**지시 원문**
+> 모두 체크 해제라는게 license가 예라면 no license로 하라는거야?
+
+**답변 요지**: README, .gitignore, 라이선스를 모두 넣지 않고 빈 저장소로 만들어 달라고 했다. GitHub가 첫 커밋을 따로 만들면 로컬 이력과 갈라져 push가 거부되기 때문이다. 라이선스는 나중에 로컬에서 `LICENSE`를 커밋해 추가할 수 있으니, 공개 전인 6단계에서 정하자고 제안했다.
+
+| 질문 | 이진성 선택 | 근거 |
+|---|---|---|
+| 코드 라이선스 | **6단계로 미룸** (저장소는 No license로 생성) | 라이선스 없이 공개하면 법적으로 재사용 불가(모든 권리 보유)다. 데이터는 저장소에 없으므로 코드 라이선스와 데이터 이용 조건이 충돌하지 않는다 |
+
+**지시 원문**
+> wm811k-wafer-defect-classification
+>  만들었어
+
+**한 일**
+- `git ls-remote`로 저장소가 있고 비어 있음(ref 없음)을 확인했다.
+- `git remote add origin https://github.com/sl2ver/wm811k-wafer-defect-classification.git`, `git push -u origin main`을 실행했다. 원격 `main`이 `11c1548`과 일치한다.
+- 로그인 없이 GitHub API를 조회하면 HTTP 404가 나온다. **private 상태임을 확인**한 것이다.
+
 ---
 
 ## 오류 기록

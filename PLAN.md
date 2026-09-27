@@ -52,6 +52,7 @@
 | 15:13 | 데이터 출처 | Kaggle `qingyi/wm811k-wafer-map` (kagglehub 익명) |
 | 15:13 | 파이썬 버전 | 3.12 + pandas 2.2.3 |
 | 15:13 | torch | 1단계에서 torch 2.7.1+cu118 설치·검증 |
+| 15:25 | 코드 라이선스 | 6단계(공개 전)로 미룸, 저장소는 No license로 생성 |
 
 ## 5. 변경 이력
 
