@@ -881,6 +881,54 @@ C: 여유가 작아서 데이터와 venv를 어디에 둘지가 첫 판단 지�
 |---|---|
 | 수정한 대시보드(A안) | **이대로 확정** |
 
+---
+
+## [21:40 | T+6:52] 6단계: 정리
+
+**지시 원문**(재현 대기 중)
+> 끝나면 알려줘
+
+- RESULT.md를 완성했다.
+  - 1절: 최종 수치, 성공 기준 판정표, 짝비교, 누수 점검, 외곽선 개입
+  - 2절: 버린 것 9가지
+  - 3절: 한계 9가지
+  - 4절: 오류 기록 요약 E1~E14
+  - 5절: 판단 목록 1~13
+- README 첫머리에 결과 요약 두 문장을 넣었다(조사에서 "리포트 톤은 README에 두라"고 권한 것).
+- `scripts/compare_reproduction.py`로 재현 결과를 비교한다. 처음 짠 것은 clone에 들어 있던 결과를 재현 결과로 착각했다(E14). 재현 중 새로 만들어진 파일만 비교하도록 고쳤다.
+
+## [21:18–22:27 | T+6:30–7:39] 재현 확인 (판단 지점 11·12의 범위)
+
+**절차**: 새 폴더 `D:/hynix_repro`에서 README 순서를 그대로 따랐다. 로그는 `D:/hynix_repro_run.log`에 있다.
+
+| 단계 | 걸린 시간 | 결과 |
+|---|---|---|
+| `git clone` (GitHub private 저장소) | 2초 | 정상 |
+| `py -3.12 -m venv .venv` + `pip install -r requirements.txt` | 4분 12초 | torch 2.7.1+cu118 포함, 정상 |
+| `download_data.py` | 1분 | 크기 2,095,505,977 B, SHA-256 `1d04fccb…5c65`, shape (811457, 6) 모두 OK |
+| `explore_data.py` | 1분 36초 | 정상 |
+| `make_splits.py` | 3분 50초 | 정상 |
+| `baseline.py` | 5분 38초 | 정상 |
+| `split_variance.py` | 12분 16초 | 정상 |
+| `train_cnn.py --split main --loss ce` | 39분 52초 | 정상 |
+| `evaluate_cnn.py` | 9초 | 정상 |
+
+**비교 결과**(`compare_reproduction.py D:/hynix_repro`, 실행 시간 항목은 빼고 비교, 22:27)
+
+| 비교 대상 | 결과 |
+|---|---|
+| `outputs/eda/summary.json` (탐색 수치 전체) | **MATCH** |
+| `outputs/splits/split_summary.json` (정제·분할·누수 점검) | **MATCH** |
+| `data/processed/labeled_clean.pkl`의 라벨·lot·연결 성분·주/참고 분할 열(169,680행) | **MATCH** |
+| `outputs/baseline/results.json` (모든 베이스라인·대조군, 두 분할, CI 포함) | **MATCH** |
+| `outputs/splits/split_seed_variance.json` (seed 10개 × 규칙 2개) | **MATCH** |
+| `outputs/cnn/main_ce/history.json` (20 epoch의 train loss·val macro-F1) | **MATCH** |
+| `outputs/cnn/results.json`의 최종 모델, 비교 기준, 성공 판정, main_ce 전체(원시·보정, val·test, CI, 보정 bias) | **MATCH** |
+
+→ **새 폴더에서 README 순서대로 처음부터 돌려도 같은 숫자가 나온다.** CNN은 결정론 모드(`torch.use_deterministic_algorithms`) 덕분에 epoch별 값과 test 지표까지 똑같이 나왔다.
+- 재현하지 않은 것: weighted CE, 무작위 분할 CNN, 셔플 대조군 CNN은 다시 학습하지 않았다(판단 지점 11의 범위). 외곽선 개입 실험은 원본에서 두 번 돌려 같은 값을 확인했다.
+- 재현 폴더 `D:/hynix_repro`(venv·데이터 포함, 수 GB)는 지우지 않고 남겨 두었다.
+
 
 ---
 
