@@ -1,0 +1,51 @@
+{
+ "source": "scripts/train_cnn.py",
+ "run": "main_ce_shuffled",
+ "args": {
+  "split": "main",
+  "loss": "ce",
+  "epochs": 5,
+  "patience": 5,
+  "lr": 0.001,
+  "shuffle_labels": true
+ },
+ "seed": 0,
+ "size": 64,
+ "batch": 256,
+ "params": 583753,
+ "best_epoch": 1,
+ "best_val_macro_f1": 0.1021,
+ "total_seconds": 619.5,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.82375,
+   "val_macro_f1": 0.1021,
+   "seconds": 119.2
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.68154,
+   "val_macro_f1": 0.1021,
+   "seconds": 119.0
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.67605,
+   "val_macro_f1": 0.1021,
+   "seconds": 119.3
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.67359,
+   "val_macro_f1": 0.1021,
+   "seconds": 120.1
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.67366,
+   "val_macro_f1": 0.1021,
+   "seconds": 119.6
+  }
+ ]
+}

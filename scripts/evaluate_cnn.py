@@ -129,8 +129,10 @@ def main():
         for variant, b in (("raw", np.zeros(K)), ("calibrated", bias)):
             p = {s: (logp[s] + b).argmax(1) for s in ("val", "test")}
             run[variant] = {s: evaluate(y[s], p[s], groups[s], rng) for s in ("val", "test")}
+            adj = np.exp(logp["test"] + b)
+            adj /= adj.sum(1, keepdims=True)  # probabilities consistent with this variant's prediction
             preds.append(pd.DataFrame({"run": run_dir.name, "variant": variant, "id": ids["test"], "label": y["test"],
-                                       "pred": p["test"], **{f"p_{c}": z["test"][:, i] for i, c in enumerate(CLASSES)}}))
+                                       "pred": p["test"], **{f"p_{c}": adj[:, i] for i, c in enumerate(CLASSES)}}))
         results["runs"][run_dir.name] = run
         for variant in ("raw", "calibrated"):
             v, t = run[variant]["val"], run[variant]["test"]
