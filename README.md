@@ -2,7 +2,7 @@
 
 공개 웨이퍼 맵 데이터셋 WM-811K(LSWMD)의 결함 패턴 9종(Center, Donut, Edge-Loc, Edge-Ring, Loc, Near-full, Random, Scratch, none)을 분류하는 파이프라인과 결과 대시보드. 24시간 개인 해커톤 연습 프로젝트다. 작업 과정은 [PLAN.md](PLAN.md), [LOG.md](LOG.md), [RESULT.md](RESULT.md), [GLOSSARY.md](GLOSSARY.md)에 기록한다.
 
-> 진행 상황: 4단계(본 모델) 진행 중. 최종 수치는 [RESULT.md](RESULT.md)에 정리한다.
+> 진행 상황: 5단계(대시보드)까지 완료. 최종 수치는 [RESULT.md](RESULT.md)에 정리한다.
 
 **한 줄로 전체 재실행** (데이터 받기부터 평가까지, 이 PC에서 약 4~5시간이며 대부분 CNN 학습 시간이다):
 
@@ -77,6 +77,8 @@ py -3.12 -m venv .venv
 - 브라우저에서 http://localhost:8501 을 연다.
 - 내용: 핵심 수치(베이스라인 대비), 클래스별 recall·F1 막대그래프, 혼동 행렬, 클래스별 맞힘·놓침·오탐 웨이퍼 맵 예시.
 - 5단계까지의 산출물(`outputs/`, `data/processed/`)이 있어야 열린다.
+
+![대시보드 스크린샷](outputs/dashboard/dashboard_full.png)
 
 ## 7. 데이터 인용
 

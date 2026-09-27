@@ -125,7 +125,7 @@ cm = np.array(ft["confusion"])
 cells = pd.DataFrame([{"정답": CLASSES[i], "예측": CLASSES[j], "장수": int(cm[i, j]),
                        "비율": cm[i, j] / max(cm[i].sum(), 1)} for i in range(len(CLASSES)) for j in range(len(CLASSES))])
 value = "비율" if normalize else "장수"
-heat = alt.Chart(cells).encode(x=alt.X("예측:N", sort=CLASSES), y=alt.Y("정답:N", sort=CLASSES))
+heat = alt.Chart(cells).encode(x=alt.X("예측:N", sort=CLASSES, title="예측"), y=alt.Y("정답:N", sort=CLASSES, title=None))
 heat = heat.mark_rect().encode(
     color=alt.Color(f"{value}:Q", scale=alt.Scale(range=["#fcfcfb", "#104281"], interpolate="rgb", type="linear" if normalize else "symlog"),
                     legend=None),
@@ -134,6 +134,7 @@ heat = heat.mark_rect().encode(
     text=alt.Text(f"{value}:Q", format=".0%" if normalize else ","),
     color=alt.condition(alt.datum[value] > (0.55 if normalize else cm.max() / 3), alt.value("white"), alt.value("#0b0b0b")))
 st.altair_chart(heat.properties(height=430), width="stretch")
+st.caption("행 = 정답 클래스, 열 = 예측 클래스. 칸에 마우스를 올리면 장수가 보인다.")
 
 # ---- wafer examples
 st.subheader("웨이퍼 맵 예시")
