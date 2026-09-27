@@ -1,0 +1,138 @@
+{
+  "source": "scripts/make_splits.py",
+  "seed": 0,
+  "near_px": 10,
+  "min_dies": 100,
+  "cleaning": {
+    "labeled": 172950,
+    "removed_label_conflict_rows": 28,
+    "removed_lt100_die_rows": 4,
+    "removed_duplicate_rows": 3238,
+    "kept": 169680
+  },
+  "class_counts_kept": {
+    "none": 144269,
+    "Edge-Ring": 9672,
+    "Edge-Loc": 5151,
+    "Center": 4286,
+    "Loc": 3572,
+    "Scratch": 1182,
+    "Random": 852,
+    "Donut": 555,
+    "Near-full": 141
+  },
+  "near_copy_pairs_after_cleaning": 4299,
+  "exact_pairs_after_cleaning": 0,
+  "components": {
+    "count": 10114,
+    "largest": 133,
+    "largest_share": 0.0008,
+    "multi_lot": 387
+  },
+  "main": {
+    "rows": {
+      "train": 118777,
+      "val": 25452,
+      "test": 25451
+    },
+    "share": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "class_counts": {
+      "train": {
+        "Center": 2999,
+        "Donut": 388,
+        "Edge-Loc": 3607,
+        "Edge-Ring": 6770,
+        "Loc": 2500,
+        "Near-full": 97,
+        "Random": 596,
+        "Scratch": 826,
+        "none": 100994
+      },
+      "val": {
+        "Center": 643,
+        "Donut": 83,
+        "Edge-Loc": 772,
+        "Edge-Ring": 1450,
+        "Loc": 536,
+        "Near-full": 23,
+        "Random": 129,
+        "Scratch": 178,
+        "none": 21638
+      },
+      "test": {
+        "Center": 644,
+        "Donut": 84,
+        "Edge-Loc": 772,
+        "Edge-Ring": 1452,
+        "Loc": 536,
+        "Near-full": 21,
+        "Random": 127,
+        "Scratch": 178,
+        "none": 21637
+      }
+    },
+    "leakage": {
+      "near_copy_pairs_across_splits": 0,
+      "near_copy_pairs_train_test": 0,
+      "exact_pairs_across_splits": 0,
+      "lots_in_more_than_one_split": 0
+    }
+  },
+  "random": {
+    "rows": {
+      "train": 118776,
+      "val": 25452,
+      "test": 25452
+    },
+    "share": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "class_counts": {
+      "train": {
+        "Center": 3000,
+        "Donut": 389,
+        "Edge-Loc": 3606,
+        "Edge-Ring": 6771,
+        "Loc": 2500,
+        "Near-full": 99,
+        "Random": 596,
+        "Scratch": 827,
+        "none": 100988
+      },
+      "val": {
+        "Center": 643,
+        "Donut": 83,
+        "Edge-Loc": 772,
+        "Edge-Ring": 1450,
+        "Loc": 536,
+        "Near-full": 21,
+        "Random": 128,
+        "Scratch": 178,
+        "none": 21641
+      },
+      "test": {
+        "Center": 643,
+        "Donut": 83,
+        "Edge-Loc": 773,
+        "Edge-Ring": 1451,
+        "Loc": 536,
+        "Near-full": 21,
+        "Random": 128,
+        "Scratch": 177,
+        "none": 21640
+      }
+    },
+    "leakage": {
+      "near_copy_pairs_across_splits": 2049,
+      "near_copy_pairs_train_test": 841,
+      "exact_pairs_across_splits": 0,
+      "lots_in_more_than_one_split": 7849
+    }
+  }
+}
