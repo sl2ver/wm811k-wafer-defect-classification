@@ -1,0 +1,620 @@
+{
+  "source": "scripts/explore_data.py",
+  "seed": 0,
+  "near_px": 10,
+  "rows": {
+    "total": 811457,
+    "labeled": 172950,
+    "unlabeled": 638507,
+    "index_is_range": true
+  },
+  "label_values_raw": {
+    "None": 638507,
+    "none": 147431,
+    "Edge-Ring": 9680,
+    "Edge-Loc": 5189,
+    "Center": 4294,
+    "Loc": 3593,
+    "Scratch": 1193,
+    "Random": 866,
+    "Donut": 555,
+    "Near-full": 149
+  },
+  "split_values_raw": {
+    "None": 638507,
+    "Test": 118595,
+    "Training": 54355
+  },
+  "class_counts": {
+    "Center": 4294,
+    "Donut": 555,
+    "Edge-Loc": 5189,
+    "Edge-Ring": 9680,
+    "Loc": 3593,
+    "Near-full": 149,
+    "Random": 866,
+    "Scratch": 1193,
+    "none": 147431
+  },
+  "class_by_split": {
+    "Center": {
+      "Training": 3462,
+      "Test": 832
+    },
+    "Donut": {
+      "Training": 409,
+      "Test": 146
+    },
+    "Edge-Loc": {
+      "Test": 2772,
+      "Training": 2417
+    },
+    "Edge-Ring": {
+      "Training": 8554,
+      "Test": 1126
+    },
+    "Loc": {
+      "Test": 1973,
+      "Training": 1620
+    },
+    "Near-full": {
+      "Test": 95,
+      "Training": 54
+    },
+    "Random": {
+      "Training": 609,
+      "Test": 257
+    },
+    "Scratch": {
+      "Test": 693,
+      "Training": 500
+    },
+    "none": {
+      "Test": 110701,
+      "Training": 36730
+    }
+  },
+  "split_by_labeled": {
+    "labeled": {
+      "Test": 118595,
+      "Training": 54355
+    },
+    "unlabeled": {
+      "None": 638507
+    }
+  },
+  "shapes": {
+    "distinct_all": 632,
+    "distinct_labeled": 346,
+    "labeled_h_min_median_max": [
+      15,
+      33.0,
+      212
+    ],
+    "labeled_w_min_median_max": [
+      3,
+      33.0,
+      204
+    ],
+    "labeled_top10": {
+      "25x27": 18781,
+      "26x26": 14366,
+      "30x34": 12400,
+      "29x26": 11751,
+      "27x25": 10682,
+      "39x37": 10173,
+      "33x29": 8125,
+      "42x44": 6724,
+      "44x41": 6134,
+      "41x33": 5091
+    },
+    "labeled_in_shapes_with_lt10_members": 508,
+    "defect_share_in_rare_shapes": 0.9823,
+    "defect_share_all_labeled": 0.1476,
+    "median_h_by_class": {
+      "Center": 25.0,
+      "Donut": 41.0,
+      "Edge-Loc": 36.0,
+      "Edge-Ring": 53.0,
+      "Loc": 35.0,
+      "Near-full": 33.0,
+      "Random": 35.0,
+      "Scratch": 41.0,
+      "none": 33.0
+    },
+    "labeled_aspect_h_over_w_outside_0.9_1.1": 55586,
+    "test_wafers_with_shape_absent_from_training": 8263,
+    "center_share_in_25x27": 0.5242
+  },
+  "pixels": {
+    "value_counts_maps_containing": {
+      "0": 811457,
+      "1": 811118,
+      "2": 753129
+    },
+    "dtypes": {
+      "uint8": 811457
+    },
+    "maps_without_die": 0,
+    "dieSize_equals_n_die": 811457,
+    "maps_all_dies_defective_by_label": {
+      "None": 325,
+      "Near-full": 14
+    },
+    "maps_without_defect_by_label": {
+      "None": 58327,
+      "none": 1
+    },
+    "labeled_maps_lt100_dies": {
+      "647495": [
+        24,
+        13,
+        34,
+        "none"
+      ],
+      "648310": [
+        24,
+        18,
+        34,
+        "none"
+      ],
+      "648324": [
+        18,
+        4,
+        54,
+        "none"
+      ],
+      "745584": [
+        15,
+        3,
+        3,
+        "none"
+      ]
+    },
+    "defect_density_by_class_p5_median_p95": {
+      "Center": [
+        0.0578,
+        0.2505,
+        0.3734
+      ],
+      "Donut": [
+        0.1364,
+        0.2576,
+        0.5065
+      ],
+      "Edge-Loc": [
+        0.0573,
+        0.1557,
+        0.4031
+      ],
+      "Edge-Ring": [
+        0.0615,
+        0.1403,
+        0.2381
+      ],
+      "Loc": [
+        0.0169,
+        0.1425,
+        0.3089
+      ],
+      "Near-full": [
+        0.7491,
+        0.8779,
+        1.0
+      ],
+      "Random": [
+        0.2937,
+        0.4768,
+        0.6592
+      ],
+      "Scratch": [
+        0.0227,
+        0.0917,
+        0.2155
+      ],
+      "none": [
+        0.0318,
+        0.0983,
+        0.2035
+      ]
+    },
+    "none_with_density_gt_0.2": 8200
+  },
+  "lots": {
+    "distinct_all": 46293,
+    "distinct_labeled": 10762,
+    "wafers_per_lot_min_median_max": [
+      1,
+      24.0,
+      25
+    ],
+    "waferIndex_min_max": [
+      1.0,
+      25.0
+    ],
+    "waferIndex_all_integer": true,
+    "duplicated_lot_waferIndex": 0,
+    "lots_fully_labeled": 4685,
+    "lots_partially_labeled": 6077,
+    "lots_unlabeled": 35531,
+    "labeled_lots_in_both_train_and_test": 0,
+    "share_with_same_class_lotmate": {
+      "Center": 0.7706,
+      "Donut": 0.7369,
+      "Edge-Loc": 0.5606,
+      "Edge-Ring": 0.9526,
+      "Loc": 0.4676,
+      "Near-full": 0.1342,
+      "Random": 0.5797,
+      "Scratch": 0.1861
+    },
+    "share_with_same_class_lotmate_all_defects": 0.716
+  },
+  "duplicates": {
+    "distinct_maps_all": 696599,
+    "rows_in_duplicate_groups_all": 147488,
+    "maps_without_defect_all": 58328,
+    "labeled_duplicate_groups": 3250,
+    "labeled_rows_in_duplicate_groups": 6502,
+    "groups_spanning_training_and_test": 3158,
+    "test_rows_copied_from_training": 3158,
+    "test_rows_copied_from_training_by_class": {
+      "none": 3057,
+      "Edge-Loc": 37,
+      "Loc": 21,
+      "Random": 14,
+      "Scratch": 11,
+      "Edge-Ring": 6,
+      "Center": 6,
+      "Near-full": 6
+    },
+    "label_conflict_groups": 14,
+    "label_conflicts": [
+      [
+        [
+          5805,
+          "Edge-Loc",
+          "Training",
+          "lot234"
+        ],
+        [
+          643188,
+          "none",
+          "Test",
+          "lot40470"
+        ]
+      ],
+      [
+        [
+          7140,
+          "none",
+          "Training",
+          "lot287"
+        ],
+        [
+          645879,
+          "Edge-Loc",
+          "Test",
+          "lot40579"
+        ]
+      ],
+      [
+        [
+          5365,
+          "none",
+          "Training",
+          "lot216"
+        ],
+        [
+          645401,
+          "Center",
+          "Test",
+          "lot40559"
+        ]
+      ],
+      [
+        [
+          6917,
+          "Edge-Ring",
+          "Training",
+          "lot278"
+        ],
+        [
+          642913,
+          "Edge-Loc",
+          "Test",
+          "lot40459"
+        ]
+      ],
+      [
+        [
+          2468,
+          "none",
+          "Training",
+          "lot100"
+        ],
+        [
+          645178,
+          "Edge-Loc",
+          "Test",
+          "lot40549"
+        ]
+      ],
+      [
+        [
+          5954,
+          "Center",
+          "Training",
+          "lot240"
+        ],
+        [
+          643483,
+          "Loc",
+          "Test",
+          "lot40481"
+        ]
+      ],
+      [
+        [
+          3153,
+          "none",
+          "Training",
+          "lot127"
+        ],
+        [
+          643662,
+          "Loc",
+          "Test",
+          "lot40489"
+        ]
+      ],
+      [
+        [
+          1652,
+          "none",
+          "Training",
+          "lot67"
+        ],
+        [
+          640448,
+          "Edge-Loc",
+          "Test",
+          "lot40359"
+        ]
+      ],
+      [
+        [
+          6673,
+          "Edge-Ring",
+          "Training",
+          "lot269"
+        ],
+        [
+          645298,
+          "Edge-Loc",
+          "Test",
+          "lot40555"
+        ]
+      ],
+      [
+        [
+          6341,
+          "none",
+          "Training",
+          "lot255"
+        ],
+        [
+          642782,
+          "Loc",
+          "Test",
+          "lot40453"
+        ]
+      ],
+      [
+        [
+          3881,
+          "none",
+          "Training",
+          "lot157"
+        ],
+        [
+          645356,
+          "Edge-Loc",
+          "Test",
+          "lot40557"
+        ]
+      ],
+      [
+        [
+          806,
+          "none",
+          "Training",
+          "lot33"
+        ],
+        [
+          641820,
+          "Edge-Loc",
+          "Test",
+          "lot40414"
+        ]
+      ],
+      [
+        [
+          4378,
+          "none",
+          "Training",
+          "lot177"
+        ],
+        [
+          645993,
+          "Edge-Loc",
+          "Test",
+          "lot40583"
+        ]
+      ],
+      [
+        [
+          2603,
+          "Center",
+          "Training",
+          "lot105"
+        ],
+        [
+          644717,
+          "none",
+          "Test",
+          "lot40531"
+        ]
+      ]
+    ],
+    "labeled_rows_with_unlabeled_twin_by_split": {
+      "Test": 5408,
+      "Training": 1691
+    }
+  },
+  "near_copies": {
+    "pairs_le_near_px": 7558,
+    "exact_pairs": 3254,
+    "cross_lot_pairs": 7093,
+    "wafers_with_nonexact_cross_lot_near_copy_by_class": {
+      "Center": 2009,
+      "Donut": 6,
+      "Edge-Loc": 317,
+      "Edge-Ring": 136,
+      "Loc": 249,
+      "Near-full": 11,
+      "Random": 37,
+      "Scratch": 22,
+      "none": 1
+    },
+    "lot_components": 9481,
+    "largest_component_wafers": 12596,
+    "largest_component_share": 0.0728
+  },
+  "split_leakage": {
+    "random_stratified": {
+      "test_share": 0.2,
+      "test_with_train_near_copy_all": 0.0446,
+      "test_with_train_near_copy_defect": 0.1011,
+      "test_with_train_near_copy_center": 0.3795,
+      "test_with_train_exact_copy_all": 0.0307,
+      "test_defect_with_same_class_lotmate_in_train": 0.6924
+    },
+    "group_lot": {
+      "test_share": 0.2021,
+      "test_with_train_near_copy_all": 0.0466,
+      "test_with_train_near_copy_defect": 0.104,
+      "test_with_train_near_copy_center": 0.4071,
+      "test_with_train_exact_copy_all": 0.0322,
+      "test_defect_with_same_class_lotmate_in_train": 0.0
+    },
+    "group_lot_near_copy_component": {
+      "test_share": 0.2566,
+      "test_with_train_near_copy_all": 0.0,
+      "test_with_train_near_copy_defect": 0.0,
+      "test_with_train_near_copy_center": 0.0,
+      "test_with_train_exact_copy_all": 0.0,
+      "test_defect_with_same_class_lotmate_in_train": 0.0
+    },
+    "original_trianTestLabel": {
+      "test_share": 0.6857,
+      "test_with_train_near_copy_all": 0.0266,
+      "test_with_train_near_copy_defect": 0.0129,
+      "test_with_train_near_copy_center": 0.0072,
+      "test_with_train_exact_copy_all": 0.0266,
+      "test_defect_with_same_class_lotmate_in_train": 0.0
+    }
+  },
+  "example_ids": {
+    "Center": [
+      86318,
+      132032,
+      161121,
+      524350,
+      529498,
+      588904,
+      591383,
+      703642
+    ],
+    "Donut": [
+      279256,
+      280051,
+      316511,
+      391520,
+      479626,
+      674128,
+      680765,
+      728967
+    ],
+    "Edge-Loc": [
+      7417,
+      55416,
+      58256,
+      106677,
+      363432,
+      691118,
+      770912,
+      776031
+    ],
+    "Edge-Ring": [
+      186640,
+      213873,
+      229836,
+      253808,
+      300284,
+      329470,
+      333965,
+      360358
+    ],
+    "Loc": [
+      138391,
+      599243,
+      681777,
+      713909,
+      718716,
+      723886,
+      763238,
+      767333
+    ],
+    "Near-full": [
+      247177,
+      655156,
+      698787,
+      728673,
+      728823,
+      736609,
+      764587,
+      785955
+    ],
+    "Random": [
+      18078,
+      18134,
+      124729,
+      191615,
+      243192,
+      592277,
+      661568,
+      759965
+    ],
+    "Scratch": [
+      99017,
+      152946,
+      242615,
+      380542,
+      693245,
+      732651,
+      789914,
+      792749
+    ],
+    "none": [
+      642528,
+      676816,
+      711602,
+      739133,
+      742740,
+      749978,
+      802577,
+      810749
+    ]
+  }
+}

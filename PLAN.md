@@ -27,8 +27,8 @@
 
 | 단계 | 목표 시간 | 산출물 | 확인 방법 | 상태 |
 |---|---|---|---|---|
-| 1. 환경·데이터 확보 | ~2 h | venv, `requirements.txt`, `scripts/download_data.py`, 기록 파일 | `.venv\Scripts\python scripts\download_data.py` → 크기·SHA-256·shape가 OK로 찍히는지; GPU 점검 명령(README) | 진행 중 |
-| 2. 데이터 탐색 | ~3 h | 분포 표, 클래스별 대표 맵 그림, 이상점 목록, GLOSSARY 9종 | 탐색 스크립트 출력 수치와 그림 파일 | 대기 |
+| 1. 환경·데이터 확보 | ~2 h | venv, `requirements.txt`, `scripts/download_data.py`, 기록 파일 | `.venv\Scripts\python scripts\download_data.py` → 크기·SHA-256·shape가 OK로 찍히는지; GPU 점검 명령(README) | 완료 (T+0:36) |
+| 2. 데이터 탐색 | ~3 h | 분포 표, 클래스별 대표 맵 그림, 이상점 목록, GLOSSARY 9종 | `.venv\Scripts\python scripts\explore_data.py` → `outputs/eda/summary.json`과 그림 5개가 다시 만들어지는지 | 체크포인트 2 대기 (T+1:20) |
 | 3. 베이스라인 | ~3 h | 다수 클래스·특징+고전 모델·셔플 라벨 결과표 | 평가 스크립트 한 줄 실행 → 표 재생성 | 대기 |
 | 4. 본 모델 | ~7 h | 체크포인트 3에서 고른 모델, 불균형 대응 전후 비교, 누수 재점검 | 같은 평가 데이터에서 베이스라인과 비교 | 대기 |
 | 5. 대시보드 | ~4 h | Streamlit 한 페이지, README 실행법 | `streamlit run ...` 스크린샷 | 대기 |
