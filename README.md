@@ -2,7 +2,9 @@
 
 공개 웨이퍼 맵 데이터셋 WM-811K(LSWMD)의 결함 패턴 9종(Center, Donut, Edge-Loc, Edge-Ring, Loc, Near-full, Random, Scratch, none)을 분류하는 파이프라인과 결과 대시보드. 24시간 개인 해커톤 연습 프로젝트다. 작업 과정은 [PLAN.md](PLAN.md), [LOG.md](LOG.md), [RESULT.md](RESULT.md), [GLOSSARY.md](GLOSSARY.md)에 기록한다.
 
-> 진행 상황: 5단계(대시보드)까지 완료. 최종 수치는 [RESULT.md](RESULT.md)에 정리한다.
+**결과**: 학습에 쓰지 않은 lot의 웨이퍼 25,444장에서 소형 CNN이 macro-F1 0.909(95% CI 0.885–0.922)를 기록했다. 손으로 만든 특징 + 랜덤 포레스트 베이스라인(0.843)보다 0.066 높고, 가장 약하던 Loc recall은 0.497에서 0.775로, Scratch는 0.51에서 0.81로 올랐다. 자세한 수치, 버린 시도, 한계는 [RESULT.md](RESULT.md)에 있다.
+
+> 진행 상황: 6단계(정리·재현 확인) 진행 중.
 
 **한 줄로 전체 재실행** (데이터 받기부터 평가까지, 이 PC에서 약 4~5시간이며 대부분 CNN 학습 시간이다):
 

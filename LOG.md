@@ -902,6 +902,6 @@ C: 여유가 작아서 데이터와 venv를 어디에 둘지가 첫 판단 지�
 | E10 | 17:26 | Claude (분석 가설) | 새 묶음 규칙에서 Loc recall이 오른 이유를 "라벨이 다른 재검사 쌍둥이의 역누수"로 추정하고 이진성에게 그렇게 설명함 | Claude: 직접 짠 진단(`split_variance.py`)에서 라벨이 다른 쌍둥이가 25쌍뿐이고 모두 두 규칙에서 같이 묶이는 10픽셀 이내 쌍임을 확인 | 가설 철회. 원인은 별도 조사 워크플로로 추적(결과는 이후 항목) |
 | E11 | 18:47 | Claude (분할 설계) | `StratifiedGroupKFold`의 fold 0–2를 그대로 test로 씀. SGKF는 크고 치우친 그룹을 seed와 무관하게 같은 fold에 넣기 때문에 **쉬운 Loc 가족(lot7994, 132장)과 Near-full 대부분이 항상 test에 고정됨**. test Loc recall이 약 12 %p, macro-F1이 약 0.01 부풀려짐. seed 10개로 잰 흔들림(표준편차)도 과소평가됨 | Claude (조사·반박 검증 에이전트): Loc recall 격차의 원인을 추적하다가 sklearn 소스와 개입 실험으로 확인 | fold→분할 대응을 seed로 무작위 치환하도록 `main_split` 수정(판단 지점 9). 분할·베이스라인·CNN을 다시 만들고, 기존 결과는 "편향된 분할에서의 결과"로 남김 |
 `, ``, `	`가 제어 문자로 해석돼 `scripts
-un_all.py`, `scriptsaseline.py`, `scripts	rain_cnn.py` 경로가 깨짐 | Claude: 수정 직후 `grep`으로 명령 줄을 확인하다 발견 | 원시 문자열로 다시 치환하고 제어 문자가 남지 않았음을 확인. 커밋 전에 고쳐 저장소에는 깨진 판이 들어가지 않음 |
+un_all.py`, `scriptsaseline.py`, `scripts	rain_cnn.py` 경로가 깨짐 | Claude: 수정 직후 `grep`으로 명령 줄을 확인하다 발견 | 원시 문자열로 다시 치환하고 제어 문자가 남지 않았음을 확인. 커밋 전에 고쳐 저장소에는 깨진 판이 들어가지 않음. 21:38에 RESULT.md에 이 행을 옮겨 적다가 같은 일이 한 번 더 났고, 문자 코드로 직접 치환해 커밋 전에 고침 |
 | E12 | 19:18 | Claude (README 작성) | README의 실행 명령을 파이썬 문자열로 치환하다가 `
 | E13 | 20:53 | Claude (코드) | `evaluate_cnn.py`가 "보정" 변형 행에도 보정 **전** softmax 확률을 저장함. argmax와 예측이 104행에서 달라, 대시보드의 확신도 표시가 틀림(지표에는 영향 없음) | Claude (지표 검증 에이전트): 예측 파일의 확률 열로 보정 예측을 재현하려다 발견 | 변형마다 그 변형의 예측과 맞는 확률(`softmax(log p + bias)`)을 저장하도록 수정 후 재평가. `results.json`이 수정 전과 완전히 같고 argmax = 예측 100 %임을 확인 |
