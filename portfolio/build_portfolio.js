@@ -1,4 +1,4 @@
-// Portfolio deck: 8 pages, 16:9, Pretendard. Build chain (from portfolio/):
+// Portfolio deck: 9 pages, 16:9, Pretendard. Build chain (from portfolio/):
 //   export NODE_PATH="$(npm root -g)" && node build_portfolio.js
 //   python postprocess_pptx.py portfolio.pptx      # Korean word-wrap (latinLnBrk=0 + lang=ko-KR)
 //   powershell -NoProfile -ExecutionPolicy Bypass -File export_pdf.ps1   # PDF + preview PNGs via PowerPoint
@@ -19,7 +19,7 @@ const F = "Pretendard";
 const FS = "Pretendard SemiBold";
 const INK = "0B0B0B", INK2 = "52514E", GRAY = "8F8E8A", LINE = "DAD9D4", TINT = "F3F3F1", NAVY = "1F4E9A", WHITE = "FFFFFF";
 const W = 13.333, ML = 0.7, CW = W - 2 * ML; // content width 11.933
-const TOTAL = 8;
+const TOTAL = 9;
 const NB = " ";
 
 // ---------------------------------------------------------------- text measurement and line planning
@@ -169,8 +169,8 @@ function frame(slide, n, title, key, source) {
   const s = pres.addSlide();
   text(s, "웨이퍼 맵 불량 패턴 분류", { x: ML, y: 1.9, w: CW, h: 0.9, fontSize: 40, bold: true });
   text(s, "lot 단위로 나눈 평가에서 macro-F1 0.909를 확인한 소형 CNN", { x: ML, y: 2.85, w: CW, h: 0.5, fontFace: FS, fontSize: 20, color: NAVY });
-  text(s, "WM-811K 공개 데이터  |  개인 프로젝트  |  2026. 9.", { x: ML, y: 3.5, w: CW, h: 0.4, fontSize: 14, color: INK2 });
-  s.addImage({ path: "fig/p1_wafer_strip.png", x: ML, y: 4.3, w: 11.9, h: 1.6 });
+  text(s, "WM-811K 공개 데이터", { x: ML, y: 3.5, w: CW, h: 0.4, fontSize: 14, color: INK2 });
+  s.addImage({ path: "fig/p1_wafer_strip.svg", x: ML, y: 4.3, w: 11.9, h: 1.6 });
   text(s, "이진성", { x: ML, y: 6.45, w: 4, h: 0.4, fontSize: 16, bold: true });
 }
 
@@ -178,12 +178,12 @@ function frame(slide, n, title, key, source) {
 {
   const s = pres.addSlide();
   frame(s, 1, "프로젝트 개요",
-    "구현·실험은 Claude Code, 평가 설계와 판단·검증은 제가 맡았습니다. 새 lot에서 macro-F1 0.909.");
+    `학습에 쓰지 않은 lot 25,444장에서 macro-F1${NB}0.909. 평가 방식을 먼저 고치고 다섯 가지로 검증`);
   table(s, [
     ["데이터", `WM-811K 웨이퍼 맵 811,457장 중 라벨 있는 172,950장, 불량 패턴${NB}9종`],
     ["문제", "같은 웨이퍼의 복사본이 학습과 평가에 섞이는 누수를 막고, 새 lot에서 성능 재기"],
     ["결과", `macro-F1 0.843(베이스라인) → 0.909(CNN), 모든 패턴 recall${NB}0.77 이상`],
-    ["AI 활용", `Claude Code가 구현·실험, 별도 검증 에이전트 45개가 재검산. 체크포인트 6개에서 판단${NB}13건, 오류${NB}15건 기록`],
+    ["AI 활용", `구현·실험 Claude Code / 판단·검증 본인 / 별도 검증 에이전트 45개. 체크포인트 6개에서 판단${NB}13건, 오류${NB}15건 기록`],
   ], { x: ML, y: 2.4, w: 7.0, colW: [1.2, 5.8], rowH: 0.56, fontSize: 13 });
   labeled(s, [
     ["용어", `lot: 함께 처리한 웨이퍼 묶음(최대${NB}25장) · macro-F1: 패턴 9종 F1의 평균 · recall: 실제 그 패턴 중 맞힌 비율`],
@@ -191,13 +191,14 @@ function frame(slide, n, title, key, source) {
 
   text(s, "진행 순서", { x: 8.1, y: 2.4, w: 4.5, h: 0.3, fontSize: 12, color: GRAY });
   const steps = [["문제 정의와 평가 설계", "3쪽"], ["베이스라인과 소형 CNN", "4쪽"], ["검증과 오류 수정", "5쪽"],
-    ["AI 활용 ① 지시와 역할", "6쪽"], ["AI 활용 ② 검증과 오류 적발", "7쪽"], ["결론·한계·재현 정보", "8쪽"]];
+    ["AI 활용 ① 시간과 자원", "6쪽"], ["AI 활용 ② 지시와 판단", "7쪽"], ["AI 활용 ③ 검증과 오류 적발", "8쪽"],
+    ["결론·한계·재현 정보", "9쪽"]];
   steps.forEach(([name, page], i) => {
-    const y = 2.75 + i * 0.62;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 8.1, y, w: 4.53, h: 0.5, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.06 });
+    const y = 2.75 + i * 0.56;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 8.1, y, w: 4.53, h: 0.47, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.06 });
     text(s, [{ text: `${i + 1}  `, options: { bold: true, color: NAVY } }, { text: name }],
-      { x: 8.25, y, w: 3.6, h: 0.5, fontSize: 13.5, valign: "middle" });
-    text(s, page, { x: 11.75, y, w: 0.8, h: 0.5, fontSize: 12, color: INK2, align: "right", valign: "middle" });
+      { x: 8.25, y, w: 3.6, h: 0.47, fontSize: 13.5, valign: "middle" });
+    text(s, page, { x: 11.75, y, w: 0.8, h: 0.47, fontSize: 12, color: INK2, align: "right", valign: "middle" });
   });
 }
 
@@ -205,7 +206,7 @@ function frame(slide, n, title, key, source) {
 {
   const s = pres.addSlide();
   frame(s, 2, "문제 정의: 데이터와 평가 방식",
-    "AI 에이전트 10개가 찾은 이상점 17개 중 복사본 누수를 핵심 문제로 정하고, lot과 복사본을 한 묶음으로 나눴습니다.",
+    "에이전트 10개가 찾은 이상점 17개 중 복사본 누수를 핵심 문제로 선정. lot과 복사본을 한 묶음으로 나누는 규칙 수립",
     "근거: outputs/eda/summary.json, outputs/splits/split_summary.json");
   const lw = 5.4;
   text(s, "누수 3겹", { x: ML, y: 2.3, w: 3, h: 0.3, fontSize: 14, bold: true });
@@ -220,15 +221,15 @@ function frame(slide, n, title, key, source) {
   ], { x: ML, y: 4.25, w: lw, labelW: 1.3, fontSize: 13.5, rowH: 0.34 });
   roles(s, "탐색·분할 스크립트 구현, 이상점 탐색 에이전트 10개 병렬 실행",
     `정제 규칙·분할 방식·성공 기준 결정(판단 지점${NB}6·7)`, { x: ML, y: 5.65, w: lw, h: 0.85 });
-  s.addImage({ path: "fig/p3_leakage.png", x: 6.4, y: 2.3, w: 6.25, h: 3.2 });
-  s.addImage({ path: "fig/p3_pairs.png", x: 6.4, y: 5.25, w: 6.25, h: 1.7 });
+  s.addImage({ path: "fig/p3_leakage.svg", x: 6.4, y: 2.3, w: 6.25, h: 3.2 });
+  s.addImage({ path: "fig/p3_pairs.svg", x: 6.4, y: 5.25, w: 6.25, h: 1.7 });
 }
 
 // ---------------------------------------------------------------- 4. method and results
 {
   const s = pres.addSlide();
   frame(s, 3, "방법과 결과",
-    "구현은 AI에 맡기고 개선 방향과 채택 기준은 제가 정했습니다. 같은 test 25,444장에서 macro-F1 0.843 → 0.909.",
+    `같은 test 25,444장에서 소형 CNN macro-F1 0.843 → 0.909. Loc·Scratch recall이 가장 크게 상승`,
     "근거: outputs/baseline/results.json, outputs/cnn/results.json. 신뢰구간은 연결 성분 부트스트랩 1,000회");
   const lw = 5.6;
   table(s, [
@@ -243,14 +244,14 @@ function frame(slide, n, title, key, source) {
   ], { x: ML, y: 4.25, w: lw, labelW: 1.4, fontSize: 13.5, rowH: 0.34 });
   roles(s, "특징 23개·RF·CNN 구현, 학습 5회",
     `개선 방향과 입력 크기 결정(판단 지점${NB}8), weighted CE 폐기(판단 지점${NB}10)`, { x: ML, y: 5.9, w: lw, h: 0.85 });
-  s.addImage({ path: "fig/p4_recall.png", x: 6.6, y: 2.3, w: 6.05, h: 4.45 });
+  s.addImage({ path: "fig/p4_recall.svg", x: 6.6, y: 2.3, w: 6.05, h: 4.45 });
 }
 
 // ---------------------------------------------------------------- 5. verification and the error that was fixed
 {
   const s = pres.addSlide();
   frame(s, 4, "검증과 오류 수정",
-    "점수가 예상보다 높게 나오자 검증 에이전트 4개와 개입 실험을 돌렸고, 분할 절차의 오류 하나를 잡아 고쳤습니다.",
+    "예상보다 높은 점수 → 검증 에이전트 4개와 개입 실험 → 분할 절차 오류 1건 발견·수정",
     "근거: outputs/splits/split_seed_variance.json, outputs/cnn/outline_intervention.json, LOG.md 오류 E11");
   const lw = 6.0;
   table(s, [
@@ -263,7 +264,7 @@ function frame(slide, n, title, key, source) {
   ], { x: ML, y: 2.35, w: lw, colW: [1.45, 2.65, 1.9], rowH: 0.46, header: true, fontSize: 12.5 });
   roles(s, "검증 에이전트 4개 병렬, 개입 실험 구현",
     `오류 판정, 전부 재학습 결정(판단 지점${NB}9)`, { x: ML, y: 5.5, w: lw, h: 0.85 });
-  s.addImage({ path: "fig/p5_e11.png", x: 7.1, y: 2.3, w: 5.4, h: 2.9 });
+  s.addImage({ path: "fig/p5_e11.svg", x: 7.1, y: 2.3, w: 5.4, h: 2.9 });
   text(s, "분할 절차 오류 (LOG E11)", { x: 7.1, y: 5.3, w: 5.5, h: 0.3, fontSize: 13, bold: true });
   labeled(s, [
     ["원인", `StratifiedGroupKFold가 큰 그룹을 seed와 무관하게 같은 fold에 고정 → 쉬운 Loc${NB}132장이 항상 test`],
@@ -272,48 +273,68 @@ function frame(slide, n, title, key, source) {
   ], { x: 7.1, y: 5.62, w: 5.5, labelW: 0.55, fontSize: 11, rowH: 0.28 });
 }
 
-// ---------------------------------------------------------------- 6. how the AI was used (1): instructions and roles
+// ---------------------------------------------------------------- 6. how the AI was used (1): time and resources
 {
   const s = pres.addSlide();
-  frame(s, 5, "AI 활용 ①  지시와 역할",
-    "첫 지시문에 AI가 할 일과 멈출 지점, 기록 규칙을 정해 두고 체크포인트 6개에서 판단 13건을 내렸습니다.",
+  frame(s, 5, "AI 활용 ①  시간과 자원",
+    `7시간${NB}40분에 계획부터 재현 확인까지. 학습이 도는 동안 검증·조사 에이전트 35개를 병렬 운용`,
+    "근거: LOG.md 시각 기록(14:48–22:28), git log, scripts/*.py");
+  s.addImage({ path: "fig/p6_timeline.svg", x: ML, y: 2.3, w: 11.9, h: 2.7 });
+  table(s, [
+    ["총 작업 시간", `7시간${NB}40분 (14:48–22:28), 1인`],
+    ["GPU 학습", `5회, 3시간${NB}36분 (Quadro P2000)`],
+    ["코드", `스크립트 12개 1,766줄, 커밋 16회`],
+    ["에이전트", `워크플로 8회 35개, 병렬 실행 약 3시간`],
+    ["기록", `LOG 1,155줄, PLAN·RESULT·GLOSSARY 412줄`],
+  ], { x: ML, y: 5.2, w: 5.9, colW: [1.45, 4.45], rowH: 0.33, fontSize: 12 });
+  labeled(s, [
+    ["병렬", "CNN 학습이 도는 동안 검증 에이전트 4개가 지표 재계산·짝비교·지름길·이중맹검 수행(18:33–18:53)"],
+    ["탐색", `에이전트 10개가 29분에 이상점 17개 → 스크립트로 재검산 1분${NB}39초`],
+    ["재현", `새 폴더 재실행 1시간${NB}8분은 스크립트가 자동 비교(10개 항목)`],
+  ], { x: 7.0, y: 5.2, w: 5.63, labelW: 0.7, fontSize: 12, rowH: 0.3 });
+}
+
+// ---------------------------------------------------------------- 7. how the AI was used (2): instructions and decisions
+{
+  const s = pres.addSlide();
+  frame(s, 6, "AI 활용 ②  지시와 판단",
+    "첫 지시문에 멈출 지점과 기록 규칙을 명시. 체크포인트 6개에서 판단 13건",
     "근거: docs/wafer_project_prompt.md(첫 지시문), LOG.md 17:04 보고와 판단 지점 8");
-  const lw = 6.0;
+  const lw = 5.8;
   text(s, "첫 지시문의 규칙 (원문)", { x: ML, y: 2.3, w: lw, h: 0.3, fontSize: 13, bold: true });
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y: 2.65, w: lw, h: 1.85, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.05 });
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y: 2.65, w: lw, h: 1.9, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.05 });
   paras(s, [
     "“판단이 필요한 지점에서는 멈추고 나에게 묻는다. 선택지 2~3개와 각각의 장단점을 제시하고, 추천이 있으면 이유와 함께 밝힌다.”",
     "“숫자는 실행 결과에서만 가져온다. 추정치를 결과처럼 쓰지 않는다.”",
     "“오류 기록: 네 코드나 판단이 틀렸던 경우, 누가(나/너) 어떻게 발견했고 무엇을 바꿨는지.”",
-  ], { x: ML + 0.15, y: 2.78, w: lw - 0.3, h: 1.65, fontSize: 12.5, color: INK, lineSpacing: 18, paraSpaceAfter: 7 });
-  text(s, "작업 흐름", { x: ML, y: 4.7, w: lw, h: 0.3, fontSize: 13, bold: true });
+  ], { x: ML + 0.15, y: 2.78, w: lw - 0.3, h: 1.7, fontSize: 12.5, color: INK, lineSpacing: 18, paraSpaceAfter: 7 });
+  text(s, "작업 흐름", { x: ML, y: 4.75, w: lw, h: 0.3, fontSize: 13, bold: true });
   const flow = [["본인", "문제 정의 · 성공 기준 · 지시문"], ["Claude Code", "구현 · 실험 · 선택지 제시"],
     ["검증 에이전트", "재계산 · 반박 · 개입 실험"], ["본인", "체크포인트에서 판단 · 기록"]];
   flow.forEach(([who, what], i) => {
-    const y = 5.05 + i * 0.5;
+    const y = 5.1 + i * 0.48;
     const dark = i % 3 === 0;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y, w: lw, h: 0.4, fill: { color: dark ? INK : TINT }, line: { color: dark ? INK : TINT }, rectRadius: 0.05 });
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y, w: lw, h: 0.38, fill: { color: dark ? INK : TINT }, line: { color: dark ? INK : TINT }, rectRadius: 0.05 });
     text(s, [{ text: who + "   ", options: { bold: true, color: dark ? WHITE : NAVY } }, { text: what, options: { color: dark ? WHITE : INK } }],
-      { x: ML + 0.15, y, w: lw - 0.3, h: 0.4, fontSize: 12.5, valign: "middle" });
-    if (i < flow.length - 1) text(s, "↓", { x: ML + lw / 2 - 0.15, y: y + 0.37, w: 0.3, h: 0.16, fontSize: 10, color: GRAY, align: "center" });
+      { x: ML + 0.15, y, w: lw - 0.3, h: 0.38, fontSize: 12.5, valign: "middle" });
+    if (i < flow.length - 1) text(s, "↓", { x: ML + lw / 2 - 0.15, y: y + 0.35, w: 0.3, h: 0.15, fontSize: 10, color: GRAY, align: "center" });
   });
 
   // one real checkpoint: what the AI proposed, what I decided (LOG 17:04 report, 판단 지점 8)
-  const rx = 7.0, rw = 5.63;
+  const rx = 6.8, rw = 5.83;
   text(s, "체크포인트 3: AI의 제안과 내 결정", { x: rx, y: 2.3, w: rw, h: 0.3, fontSize: 13, bold: true });
   table(s, [
     ["AI가 보고한 개선 방향 후보", "내 결정 (판단 지점 8)"],
     ["① 소형 CNN: 맵을 격자로 맞추고 회전·반전 증강. 손으로 만든 특징은 모양·위치 정보를 뭉갬. ② 특징 강화 + 부스팅: 가볍지만 개선 폭 제한. ③ 사후 임계값 보정: 빠르지만 드문 패턴은 val 과적합 위험",
       "①+③ 조합. weighted CE는 같은 test에서 비교해 결정하고 보정값은 val에서만. 비교 기준은 test 최고 베이스라인. 결과: weighted CE 0.825로 폐기, 보정 채택 0.909"],
-  ], { x: rx, y: 2.62, w: rw, colW: [2.85, 2.78], rowH: 0.3, header: true, fontSize: 13 });
-  text(s, `체크포인트 6개 · 판단 13건 · 워크플로 10회(에이전트 45개) · 오류 15건 · 작업 시간 7시간${NB}40분`, { x: rx, y: 5.6, w: rw, h: 0.3, fontSize: 10.5, color: INK2 });
+  ], { x: rx, y: 2.62, w: rw, colW: [2.95, 2.88], rowH: 0.3, header: true, fontSize: 13 });
 }
 
-// ---------------------------------------------------------------- 7. how the AI was used (2): verification and catching AI errors
+// ---------------------------------------------------------------- 8. how the AI was used (3): verification and catching AI errors
 {
   const s = pres.addSlide();
-  frame(s, 6, "AI 활용 ②  검증과 오류 적발",
-    "구현 AI와 별개의 검증 에이전트 45개가 AI의 오류 15건 중 7건을 잡았고, 8건은 자체 점검 규칙에서 나왔습니다.",
+  frame(s, 7, "AI 활용 ③  검증과 오류 적발",
+    "구현 AI와 분리한 검증 에이전트가 AI 오류 15건 중 7건 적발. 8건은 자체 점검 규칙으로 발견",
     "근거: LOG.md 오류 기록 E1~E15, 워크플로 결과 항목 10건");
   const lw = 6.0;
   text(s, "AI가 낸 오류를 잡은 사례", { x: ML, y: 2.3, w: lw, h: 0.3, fontSize: 13, bold: true });
@@ -341,11 +362,11 @@ function frame(slide, n, title, key, source) {
   ], { x: rx, y: 2.62, w: rw, colW: [2.0, 0.9, 2.73], rowH: 0.44, header: true, fontSize: 12 });
 }
 
-// ---------------------------------------------------------------- 8. conclusion, limits, reproduction
+// ---------------------------------------------------------------- 9. conclusion, limits, reproduction
 {
   const s = pres.addSlide();
-  frame(s, 7, "결론·한계·재현 정보",
-    "같은 제품의 새 lot에 대한 1차 분류 보조 수준입니다. 수율 개선 효과는 주장하지 않습니다.");
+  frame(s, 8, "결론·한계·재현 정보",
+    "같은 제품의 새 lot에 대한 1차 분류 보조 수준. 수율 개선 효과는 주장하지 않음");
   const cols = [
     ["결론", [
       `누수를 막은 평가에서 CNN${NB}0.909, 베이스라인${NB}0.843`,
@@ -357,16 +378,11 @@ function frame(slide, n, title, key, source) {
       `Near-full test${NB}18장, 신뢰구간 0.70–1.00`,
       "짧은 Scratch 약점, 라벨 노이즈 14쌍 → 라벨 기준 재정의",
     ]],
-    ["배운 점", [
-      "수치는 실행 결과에서만 옮긴다",
-      "점수가 갑자기 오르면 원인부터 찾는다",
-      "새 데이터는 분할과 라벨부터 검사한다",
-    ]],
   ];
   cols.forEach(([title, items], i) => {
-    const x = ML + i * 4.05;
-    text(s, title, { x, y: 2.35, w: 3.75, h: 0.35, fontSize: 15, bold: true });
-    bullets(s, items, { x, y: 2.75, w: 3.75, h: 2.4, fontSize: 13.5 });
+    const x = ML + i * 6.1;
+    text(s, title, { x, y: 2.35, w: 5.6, h: 0.35, fontSize: 15, bold: true });
+    bullets(s, items, { x, y: 2.75, w: 5.6, h: 2.4, fontSize: 13.5 });
   });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: ML, y: 5.4, w: CW, h: 1.45, fill: { color: TINT }, line: { color: TINT }, rectRadius: 0.06 });
   text(s, "재현 정보", { x: ML + 0.2, y: 5.5, w: 3, h: 0.3, fontSize: 13, bold: true });

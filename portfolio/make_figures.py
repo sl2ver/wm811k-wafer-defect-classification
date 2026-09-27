@@ -1,11 +1,11 @@
-"""Figures for the 7-page portfolio (sized 1:1 in inches for the slide, so font points are true).
+"""Figures for the portfolio (sized 1:1 in inches for the slide, so font points are true).
 
 Usage (from project root):
     .venv\\Scripts\\python portfolio\\make_figures.py
 
 Reads outputs/*.json, .tmp/cnn_biased_split/results.json (pre-fix split, for the
-before/after figure) and data/raw/LSWMD.pkl (wafer maps). Writes portfolio/fig/*.png.
-Font: Pretendard (user-installed OTF; see portfolio/README section in README.md).
+before/after figure) and data/raw/LSWMD.pkl (wafer maps). Writes portfolio/fig/*.svg (vector; text as paths).
+Font: Pretendard (user-installed TTF; see portfolio/make_static_ttf.py).
 """
 import json
 import os
@@ -27,9 +27,9 @@ from explore_data import CLASSES  # noqa: E402
 
 FIG = ROOT / "portfolio" / "fig"
 INK, INK2, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#ffffff"
-BLUE, ORANGE, GRAY = "#2a78d6", "#eb6834", "#8f8e8a"
+BLUE, BLUE2, ORANGE, GRAY = "#2a78d6", "#9cc0ea", "#eb6834", "#8f8e8a"
 WAFER = ListedColormap([SURFACE, "#d6d5d0", "#184f95"])
-DPI = 200
+DPI = 300
 
 
 def register_fonts():
@@ -44,6 +44,7 @@ def register_fonts():
 
 N_FONTS = register_fonts()
 plt.rcParams.update({
+    "svg.fonttype": "path",  # text as outlines: no font dependency in PowerPoint/PDF, stays vector
     "font.family": "Pretendard" if N_FONTS else "Malgun Gothic", "axes.unicode_minus": False, "font.size": 11,
     "figure.facecolor": SURFACE, "axes.facecolor": SURFACE, "savefig.facecolor": SURFACE,
     "text.color": INK, "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2,
@@ -60,7 +61,9 @@ def quiet(ax, grid_axis="x"):
 
 
 def draw_map(ax, m, title="", size=11):
-    ax.imshow(m, cmap=WAFER, vmin=0, vmax=2, interpolation="nearest")
+    # pcolormesh (one vector cell per die) instead of imshow, so the SVG has no raster inside
+    ax.pcolormesh(np.asarray(m)[::-1], cmap=WAFER, vmin=0, vmax=2, edgecolors="face", linewidth=0.2)
+    ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
     for sp in ax.spines.values():
@@ -70,9 +73,10 @@ def draw_map(ax, m, title="", size=11):
 
 
 def save(fig, name):
-    fig.savefig(FIG / name, dpi=DPI)
+    out = FIG / Path(name).with_suffix(".svg").name
+    fig.savefig(out, format="svg")
     plt.close(fig)
-    print("[saved]", name)
+    print("[saved]", out.name, f"{out.stat().st_size // 1024} KB")
 
 
 def fig_cover(maps, examples):
@@ -153,13 +157,65 @@ def fig_e11(before, after):
         for xi, v in zip(x + off, vals):
             ax.text(xi, v + 0.02, f"{v:.2f}", ha="center", va="bottom", color=INK2, fontsize=11)
     ax.set_xticks(x, groups, fontsize=11)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0, 1.0)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.set_ylabel("Loc test recall", fontsize=11)
-    ax.legend(frameon=False, loc="upper center", fontsize=10.5, ncol=2)
+    ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=2, fontsize=10.5)  # above the plot
     quiet(ax, grid_axis="y")
-    fig.subplots_adjust(left=0.14, right=0.98, top=0.95, bottom=0.26)
+    fig.subplots_adjust(left=0.14, right=0.98, top=0.88, bottom=0.26)
     save(fig, "p5_e11.png")
+
+
+def fig_timeline():
+    """What ran when, 14:48–22:28 (clock times from LOG.md headings). Three lanes: my checkpoints,
+    Claude Code's implementation/training, and verification/research agent workflows in parallel."""
+    def t(hm):
+        h, m = hm.split(":")
+        return int(h) + int(m) / 60
+
+    fig, ax = plt.subplots(figsize=(11.9, 2.9))
+    lanes = {"검증·조사 에이전트\n(별도 세션, 병렬)\n숫자 = 에이전트 수": 0, "Claude Code\n구현·학습\n(진한 색 = GPU)": 1.2,
+             "본인\n체크포인트 판단": 2.3}
+    # (start, end, label, color)
+    impl = [("15:15", "15:24", "", BLUE2), ("15:27", "16:09", "탐색 스크립트", BLUE2),
+            ("16:35", "17:15", "분할·베이스라인", BLUE2), ("17:17", "18:31", "CNN 학습 ×2", BLUE),
+            ("18:31", "18:42", "", BLUE), ("18:42", "19:23", "무작위 분할 CNN", BLUE),
+            ("19:23", "20:53", "수정된 분할로 재학습", BLUE), ("21:07", "21:15", "", BLUE2),
+            ("21:18", "22:27", "새 폴더 재현 (자동)", BLUE2)]
+    # (start, end, agents, sub-row) — concurrent runs go on the second sub-row
+    agents = [("14:50", "15:11", "10", 0), ("15:28", "15:57", "10", 0), ("16:55", "17:10", "4", 0),
+              ("17:39", "18:47", "3", 0), ("18:33", "18:53", "4", 1), ("20:57", "21:05", "4", 0),
+              ("21:18", "21:36", "4", 0)]
+    cps = [("15:24", "CP1", 0), ("16:09", "CP2", 0), ("17:04", "CP3", 0), ("18:51", "판단 9 분할 수정", 0),
+           ("21:07", "CP4", 0), ("21:15", "CP5", 1), ("22:28", "CP6", 0)]
+    for s, e, label, color in impl:
+        ax.broken_barh([(t(s), t(e) - t(s))], (1.2 - 0.26, 0.52), facecolors=color, edgecolors="none")
+        if label:
+            ax.text((t(s) + t(e)) / 2, 1.2, label, ha="center", va="center", fontsize=9.5,
+                    color="white" if color == BLUE else INK)
+    for s, e, n, row in agents:
+        yc = 0.16 - 0.32 * row
+        ax.broken_barh([(t(s), t(e) - t(s))], (yc - 0.14, 0.28), facecolors=GRAY, edgecolors="none")
+        ax.text((t(s) + t(e)) / 2, yc, n, ha="center", va="center", fontsize=9, color="white", weight="bold")
+    for s, label, up in cps:
+        col = ORANGE if "판단" in label else INK
+        ax.plot(t(s), 2.3, "o", color=col, markersize=8, zorder=3)
+        ax.text(t(s), 2.62 + 0.3 * up, label, ha="center", va="bottom", fontsize=9.5, color=col)
+    ax.axvline(t("14:48"), color=GRID, linewidth=1)
+    ax.axvline(t("22:28"), color=GRID, linewidth=1)
+    ax.set_xlim(t("14:40"), t("22:40"))
+    ax.set_ylim(-0.5, 3.3)
+    ax.set_yticks(list(lanes.values()), list(lanes.keys()), fontsize=10)
+    ax.set_xticks(range(15, 23))
+    ax.set_xticklabels([f"{h}:00" for h in range(15, 23)], fontsize=10)
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+    ax.spines["bottom"].set_color(GRID)
+    ax.tick_params(length=0)
+    ax.grid(axis="x", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    fig.subplots_adjust(left=0.12, right=0.99, top=0.98, bottom=0.15)
+    save(fig, "p6_timeline.png")
 
 
 def main():
@@ -185,6 +241,7 @@ def main():
     before = {"rf": 0.624, "cnn": biased["final"]["test"]["per_class"]["Loc"]["recall"]}
     after = {"rf": bt["per_class"]["Loc"]["recall"], "cnn": ft["per_class"]["Loc"]["recall"]}
     fig_e11(before, after)
+    fig_timeline()
     print(json.dumps({"e11_before": before, "e11_after": after}))
 
 
