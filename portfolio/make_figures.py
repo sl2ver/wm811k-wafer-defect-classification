@@ -85,7 +85,7 @@ def fig_cover(maps, examples):
 
 def fig_leakage(maps, conflicts, leak):
     # (a) leakage rate by split rule: the main evidence, drawn large
-    fig, ax = plt.subplots(figsize=(5.6, 2.9))
+    fig, ax = plt.subplots(figsize=(6.25, 3.2))
     names = ["무작위 분할", "lot 단위 분할", "lot+복사본 묶음 (채택)", "원본 분할"]
     keys = ["random_stratified", "group_lot", "group_lot_near_copy_component", "original_trianTestLabel"]
     y = np.arange(len(names))[::-1]
@@ -107,8 +107,8 @@ def fig_leakage(maps, conflicts, leak):
     save(fig, "p3_leakage.png")
 
     # (b) the same map carrying two labels across the original Training/Test split
-    fig = plt.figure(figsize=(5.6, 1.55))
-    gs = fig.add_gridspec(1, 4, left=0.01, right=0.99, top=0.66, bottom=0.03, wspace=0.55)
+    fig = plt.figure(figsize=(6.25, 1.7))
+    gs = fig.add_gridspec(1, 4, left=0.01, right=0.99, top=0.68, bottom=0.03, wspace=0.55)
     for k, group in enumerate(conflicts[:4]):
         sub = gs[k].subgridspec(1, 2, wspace=0.3)
         for j, (idx, label, split, _) in enumerate(group[:2]):
@@ -120,7 +120,7 @@ def fig_leakage(maps, conflicts, leak):
 
 
 def fig_recall(bt, ft):
-    fig, ax = plt.subplots(figsize=(5.6, 4.4))
+    fig, ax = plt.subplots(figsize=(6.25, 4.6))
     y = np.arange(len(CLASSES))[::-1]
     for off, (res, color, label) in zip((0.19, -0.19), ((bt, GRAY, "베이스라인 (특징 23개 + 랜덤 포레스트)"),
                                                           (ft, BLUE, "CNN (최종)"))):
@@ -144,8 +144,8 @@ def fig_recall(bt, ft):
 
 
 def fig_e11(before, after):
-    fig, ax = plt.subplots(figsize=(5.5, 3.0))
-    groups = ["수정 전 분할\n(큰 덩어리가 test에 고정)", "수정 후 분할\n(fold 배정을 무작위로)"]
+    fig, ax = plt.subplots(figsize=(5.4, 2.9))
+    groups = ["수정 전 분할\n(큰 lot 묶음이 test에 고정)", "수정 후 분할\n(fold 배정을 무작위로)"]
     x = np.arange(2)
     for off, (key, color, label) in zip((-0.19, 0.19), (("rf", GRAY, "베이스라인"), ("cnn", BLUE, "CNN"))):
         vals = [before[key], after[key]]
