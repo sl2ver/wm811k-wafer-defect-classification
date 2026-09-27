@@ -1,0 +1,14 @@
+# Environment
+.venv/
+.tmp/
+__pycache__/
+*.pyc
+
+# Data (WM-811K is not redistributed here; see README for download)
+data/
+
+# Large artifacts
+*.pkl
+*.pt
+*.pth
+*.npz
