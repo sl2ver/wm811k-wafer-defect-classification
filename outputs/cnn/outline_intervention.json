@@ -1,0 +1,54 @@
+{
+ "source": "scripts/outline_intervention.py",
+ "final_model": {
+  "run": "main_ce",
+  "variant": "calibrated"
+ },
+ "outline_cells_differing": 19,
+ "groups": {
+  "Center on 515-die outline -> 516": {
+   "n": 366,
+   "cnn": {
+    "pred_center_before": 1.0,
+    "pred_center_after": 1.0,
+    "pred_unchanged": 1.0,
+    "after_counts": {
+     "Center": 366
+    }
+   },
+   "rf": {
+    "pred_center_before": 0.9945,
+    "pred_center_after": 0.9945,
+    "pred_unchanged": 0.9945,
+    "after_counts": {
+     "Center": 364,
+     "none": 2
+    }
+   }
+  },
+  "none on 516-die outline -> 515": {
+   "n": 2157,
+   "cnn": {
+    "pred_center_before": 0.0,
+    "pred_center_after": 0.0,
+    "pred_unchanged": 0.9981,
+    "after_counts": {
+     "Loc": 5,
+     "none": 2152
+    }
+   },
+   "rf": {
+    "pred_center_before": 0.0009,
+    "pred_center_after": 0.0009,
+    "pred_unchanged": 0.9968,
+    "after_counts": {
+     "Center": 2,
+     "Edge-Loc": 9,
+     "Loc": 2,
+     "Scratch": 1,
+     "none": 2143
+    }
+   }
+  }
+ }
+}
