@@ -1184,6 +1184,21 @@ Claude가 7쪽 구성안(표지 / 개요 / 문제 정의·데이터 / 방법·�
 - 1문단(기)에 조건을 앞세움: 혼자서 7시간 40분, 5 GB GPU 한 장(Quadro P2000) → 역할 → 결과. 6문단(결)에 스크립트 12개 1,766줄, GPU 학습 3시간 36분 동안 원인 조사·검증 에이전트 7개 병렬(17:39–18:47, 18:33–18:53), 검증 에이전트 35개(8회)로 오류 7건 적발, 재현 1시간 8분 자동 비교.
 - 흐름: 조건·역할·결과(기) → 평가 방식 문제와 분할 규칙(승) → AI 지시 규칙과 내가 정한 것(승) → 첫 실패 E11과 결정(전) → 수정·검증·결과물·자원 효율(결). 재현 확인 문장은 5문단에서 6문단으로 옮겨 시간과 함께 적음.
 - 2,000자를 맞추려고 준지도 언급, "결과에 주석만 다는 대신", 분할 직후 검사 항목 서술을 줄임.
+- 05:4x 이진성이 저장소를 public으로 전환. 익명 접근(저장소·README·LOG·PDF 200), 추적 파일 62개에 데이터·venv·비밀값 없음, 덱·지원서 수치 20개 일치 확인.
+
+## [05:5x] 추가 지시: 근거 파일을 zip으로 묶어 제출
+
+**지시 원문**
+> 포트폴리오 제출 양식에 zip이 가능해서 포트폴리오 밑 근거 파일들을 모두 묶어서 zip으로 만들면 어떨까 해
+> 심사위원이 github에 들어가서 보지는 않을거 같아서 말이야
+> 만약 파일을 모두 묶어서 넣는다면 폴더 정리와 그 포트폴리오 하단에 적은걸 업데이트해야될거 같애
+
+> 파일 용량 제한은 50mb야
+
+처리
+- `portfolio/make_submission_zip.py` → `portfolio/submission/wafer_map_portfolio_LeeJinseong.zip` (53개 파일, 17.1 MB). zip 안 구조는 저장소와 같아서 덱 하단의 "근거: outputs/…" 경로가 그대로 맞음. 포함: portfolio.pdf, README_FIRST.md(읽는 순서), PLAN·LOG·RESULT·GLOSSARY·README·첫 지시문(+ `html/` 렌더 판, python-markdown), scripts 12개, requirements·LICENSE, outputs의 JSON·PNG·parquet, 최종 모델 test 판정 CSV(25,444행). 제외: 데이터, `.pt`, `.npz`(각 4 MB, 재실행으로 재생성).
+- 덱: 각 쪽 하단 "근거:" → "근거(첨부 zip·GitHub 같은 경로):", 6쪽 재현 정보의 저장소 행 → "근거 파일: 첨부 zip과 GitHub에 같은 구조로".
+- zip은 저장소에 넣지 않음(.gitignore).
 
 ---
 
@@ -1206,5 +1221,5 @@ Claude가 7쪽 구성안(표지 / 개요 / 문제 정의·데이터 / 방법·�
 | E11 | 18:47 | Claude (분할 설계) | `StratifiedGroupKFold`의 fold 0–2를 그대로 test로 씀. SGKF는 크고 치우친 그룹을 seed와 무관하게 같은 fold에 넣기 때문에 **쉬운 Loc 가족(lot7994, 132장)과 Near-full 대부분이 항상 test에 고정됨**. test Loc recall이 약 12 %p, macro-F1이 약 0.01 부풀려짐. seed 10개로 잰 흔들림(표준편차)도 과소평가됨 | Claude (조사·반박 검증 에이전트): Loc recall 격차의 원인을 추적하다가 sklearn 소스와 개입 실험으로 확인 | fold→분할 대응을 seed로 무작위 치환하도록 `main_split` 수정(판단 지점 9). 분할·베이스라인·CNN을 다시 만들고, 기존 결과는 "편향된 분할에서의 결과"로 남김 |
 | E12 | 19:18 | Claude (README 작성) | README의 실행 명령을 파이썬 문자열로 치환하다가 `\r`, `\b`, `\t`가 제어 문자로 해석돼 `scripts\run_all.py`, `scripts\baseline.py`, `scripts\train_cnn.py` 경로가 깨짐 | Claude: 수정 직후 `grep`으로 명령 줄을 확인하다 발견 | 원시 문자열로 다시 치환하고 제어 문자가 남지 않았음을 확인. 커밋 전에 고쳐 저장소에는 깨진 판이 들어가지 않음. 21:37에 RESULT.md에 이 행을 옮겨 적다가 같은 일이 한 번 더 났고, 문자 코드로 직접 치환해 커밋 전에 고침. 23:36 포트폴리오 커밋 전 기록 파일 점검에서 **LOG.md의 이 행 자체**도 같은 식으로 깨져 있었음을 발견(제어 문자가 들어가고 행이 세 조각으로 갈라져 순서까지 바뀜). 21:05 커밋 `ef8fa90`부터 그대로 올라가 있었다. 바이트 단위로 행을 다시 조립해 고침. 세 번 재발한 원인은 같다: 역슬래시가 든 문장을 원시 문자열이 아닌 경로로 써 넣음 |
 | E13 | 20:53 | Claude (코드) | `evaluate_cnn.py`가 "보정" 변형 행에도 보정 **전** softmax 확률을 저장함. argmax와 예측이 104행에서 달라, 대시보드의 확신도 표시가 틀림(지표에는 영향 없음) | Claude (지표 검증 에이전트): 예측 파일의 확률 열로 보정 예측을 재현하려다 발견 | 변형마다 그 변형의 예측과 맞는 확률(`softmax(log p + bias)`)을 저장하도록 수정 후 재평가. `results.json`이 수정 전과 완전히 같고 argmax = 예측 100 %임을 확인 |
-| E15 | 00:2x (포트폴리오 제작 단계) | Claude (포트폴리오 글꼴 설치) | Pretendard 정식 배포본 OTF(CFF)를 설치해 PowerPoint로 PDF를 저장하자 글자가 외곽선으로 변환돼 **텍스트가 없는 PDF**가 만들어짐(pdffonts에 Calibri만 남음, 1.4 MB). AI 기반 서류 심사에서 내용이 읽히지 않을 파일 | Claude: 내보내기 직후 `pdffonts`·`pdftotext` 점검에서 발견 | `PretendardVariable.ttf`에서 정적 TTF 4종을 만들어(`portfolio/make_static_ttf.py`) OTF 등록을 지우고 TTF로 다시 설치. 재내보내기 후 Pretendard TrueType 내장과 한글 추출을 확인(0.42 MB). 내보내기 점검 항목에 "글꼴 내장·텍스트 추출"을 추가 |
 | E14 | 21:39 | Claude (재현 비교 코드) | `compare_reproduction.py` 초안이 재현 폴더에서 **다시 만들어지지 않은** 파일까지 비교함. git clone에는 커밋된 결과 JSON이 이미 들어 있어서, 아직 돌지 않은 단계(흔들림 진단, CNN)까지 "MATCH"로 나옴(원본 복사본끼리 비교) | Claude: 재현 로그상 아직 끝나지 않은 단계가 MATCH로 나온 것을 보고 발견(보고 전) | 재현 중 새로 받은 데이터 파일보다 나중에 수정된 파일만 비교하고, 나머지는 STALE로 표시해 실패 처리하도록 수정 |
+| E15 | 00:2x (포트폴리오 제작 단계) | Claude (포트폴리오 글꼴 설치) | Pretendard 정식 배포본 OTF(CFF)를 설치해 PowerPoint로 PDF를 저장하자 글자가 외곽선으로 변환돼 **텍스트가 없는 PDF**가 만들어짐(pdffonts에 Calibri만 남음, 1.4 MB). AI 기반 서류 심사에서 내용이 읽히지 않을 파일 | Claude: 내보내기 직후 `pdffonts`·`pdftotext` 점검에서 발견 | `PretendardVariable.ttf`에서 정적 TTF 4종을 만들어(`portfolio/make_static_ttf.py`) OTF 등록을 지우고 TTF로 다시 설치. 재내보내기 후 Pretendard TrueType 내장과 한글 추출을 확인(0.42 MB). 내보내기 점검 항목에 "글꼴 내장·텍스트 추출"을 추가 |

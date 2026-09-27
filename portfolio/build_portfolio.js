@@ -154,7 +154,7 @@ function frame(slide, n, title, key, source) {
   text(slide, String(n).padStart(2, "0"), { x: ML, y: 0.55, w: 0.55, h: 0.55, fontSize: 16, bold: true, color: WHITE, align: "center", valign: "middle" });
   text(slide, title, { x: ML + 0.75, y: 0.48, w: CW - 0.75, h: 0.7, fontSize: 28, bold: true, valign: "middle" });
   para(slide, key, { x: ML, y: 1.33, w: CW, h: 0.9, fontFace: FS, fontSize: 18, color: NAVY, lineSpacing: 26 });
-  if (source) text(slide, source, { x: ML, y: 7.02, w: CW - 1.0, h: 0.3, fontSize: 10, color: GRAY });
+  if (source) text(slide, source.replace("근거:", "근거(첨부 zip·GitHub 같은 경로):"), { x: ML, y: 7.02, w: CW - 1.0, h: 0.3, fontSize: 10, color: GRAY });
   text(slide, `${n + 1} / ${TOTAL}`, { x: W - ML - 1.0, y: 7.02, w: 1.0, h: 0.3, fontSize: 10, color: GRAY, align: "right" });
 }
 
@@ -294,7 +294,7 @@ function frame(slide, n, title, key, source) {
   labeled(s, [
     ["환경", "Python 3.12.6, torch 2.7.1+cu118, scikit-learn 1.9.1, Quadro P2000, 시드 0"],
     ["실행", "python scripts/run_all.py (약 4~5시간) → outputs/*.json"],
-    ["저장소", "github.com/sl2ver/wm811k-wafer-defect-classification — PLAN.md / LOG.md(지시 원문·판단 13건·오류 15건) / RESULT.md"],
+    ["근거 파일", "첨부 zip과 github.com/sl2ver/wm811k-wafer-defect-classification(공개)에 같은 구조로: PLAN.md / LOG.md(지시 원문·판단·오류 기록) / RESULT.md / scripts / outputs"],
   ], { x: ML + 0.2, y: 5.85, w: CW - 0.4, labelW: 0.8, fontSize: 12, fill: TINT, rowH: 0.28 });
 }
 

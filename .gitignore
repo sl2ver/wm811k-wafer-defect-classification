@@ -13,3 +13,6 @@ data/
 *.pth
 *.npz
 *.parquet
+
+# Submission bundle (built by portfolio/make_submission_zip.py)
+portfolio/submission/
